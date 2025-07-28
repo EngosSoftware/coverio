@@ -6,7 +6,6 @@ version = 4
 name = "coverio"
 version = "0.0.1"
 dependencies = [
- "serde",
  "serde_json",
 ]
 
