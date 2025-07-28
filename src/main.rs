@@ -1,15 +1,21 @@
 use serde_json::{Map, Value};
 
 struct Visitor {
-    //
+    functions_percent: f64,
+    lines_percent: f64,
+    regions_percent: f64,
 }
 
 impl Visitor {
     fn new() -> Self {
-        Self {}
+        Self {
+            functions_percent: 0.0,
+            lines_percent: 0.0,
+            regions_percent: 0.0,
+        }
     }
 
-    fn visit(&self, value: &Value) {
+    fn visit(&mut self, value: &Value) {
         let Value::Object(map) = value else {
             panic!("expected object");
         };
@@ -29,12 +35,9 @@ impl Visitor {
         let Value::Object(totals) = totals else {
             panic!("expected 'totals' object");
         };
-        let functions_percent = Self::get_percent(totals, "functions");
-        println!("functions: {functions_percent}");
-        let lines_percent = Self::get_percent(totals, "lines");
-        println!("    lines: {lines_percent}");
-        let regions_percent = Self::get_percent(totals, "regions");
-        println!("  regions: {regions_percent}");
+        self.functions_percent = Self::get_percent(totals, "functions");
+        self.lines_percent = Self::get_percent(totals, "lines");
+        self.regions_percent = Self::get_percent(totals, "regions");
     }
 
     fn get_percent(map: &Map<String, Value>, key: &str) -> f64 {
@@ -42,7 +45,7 @@ impl Visitor {
             panic!("expected '{key}' object");
         };
         let Some(Value::Number(percent_number)) = map.get("percent") else {
-            panic!("expected percent number");
+            panic!("expected percent field");
         };
         let Some(percent) = percent_number.as_f64() else {
             panic!("expected percent value");
@@ -56,7 +59,10 @@ fn main() {
     if args.len() == 2 {
         let content = std::fs::read_to_string(&args[1]).expect("failed to read input file");
         let json: Value = serde_json::from_str(&content).expect("failed to parse input JSON");
-        let visitor = Visitor::new();
+        let mut visitor = Visitor::new();
         visitor.visit(&json);
+        println!("functions: {}", visitor.functions_percent);
+        println!("    lines: {}", visitor.lines_percent);
+        println!("  regions: {}", visitor.regions_percent);
     }
 }
