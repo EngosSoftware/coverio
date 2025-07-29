@@ -1,17 +1,50 @@
 use serde_json::{Map, Value};
 
+/// Badge styles as defined by `shields.io`.
+enum BadgeStyle {
+    Flat,
+    FlatSquare,
+    Plastic,
+    ForTheBadge,
+    Social,
+}
+
+impl BadgeStyle {
+    fn query_parameter(&self) -> &'static str {
+        match self {
+            BadgeStyle::Flat => "",
+            BadgeStyle::FlatSquare => "flat-square",
+            BadgeStyle::Plastic => "plastic",
+            BadgeStyle::ForTheBadge => "for-the-badge",
+            BadgeStyle::Social => "social",
+        }
+    }
+}
+
 struct CoverageReport {
+    regions_percent: f64,
     functions_percent: f64,
     lines_percent: f64,
-    regions_percent: f64,
+    threshold_green: f64,
+    threshold_red: f64,
+    color_green: String,
+    color_yellow: String,
+    color_red: String,
+    badge_style: BadgeStyle,
 }
 
 impl CoverageReport {
     fn new() -> Self {
         Self {
+            regions_percent: 0.0,
             functions_percent: 0.0,
             lines_percent: 0.0,
-            regions_percent: 0.0,
+            threshold_green: 80.0,
+            threshold_red: 50.0,
+            color_green: "21b577".to_string(),
+            color_yellow: "f4b01b".to_string(),
+            color_red: "f52020".to_string(),
+            badge_style: BadgeStyle::Flat,
         }
     }
 
@@ -37,9 +70,9 @@ impl CoverageReport {
         let Value::Object(totals) = totals else {
             panic!("expected 'totals' object");
         };
+        self.regions_percent = self.read_percent(totals, "regions");
         self.functions_percent = self.read_percent(totals, "functions");
         self.lines_percent = self.read_percent(totals, "lines");
-        self.regions_percent = self.read_percent(totals, "regions");
     }
 
     fn read_percent(&self, map: &Map<String, Value>, key: &str) -> f64 {
@@ -54,6 +87,38 @@ impl CoverageReport {
         };
         percent
     }
+
+    /// Returns a link to the `shields.io` badge reporting the coverage.
+    fn badge(&self) -> String {
+        let regions = self.regions_percent.trunc();
+        let functions = self.functions_percent.trunc();
+        let lines = self.lines_percent.trunc();
+        let mut min = f64::MAX;
+        for percent in [regions, functions, lines] {
+            if percent < min {
+                min = percent;
+            }
+        }
+        let color = if min >= self.threshold_green {
+            &self.color_green
+        } else if min < self.threshold_red {
+            &self.color_red
+        } else {
+            &self.color_yellow
+        };
+        let space = "%20";
+        let separator = format!("{space}%E2%94%82{space}");
+        let prefix = "https://img.shields.io/badge/coverage";
+        let query_parameter = self.badge_style.query_parameter();
+        let style = if query_parameter.is_empty() {
+            "".to_string()
+        } else {
+            format!("?style={query_parameter}")
+        };
+        format!(
+            "{prefix}-{regions}%25{separator}{functions}%25{separator}{lines}%25-{color}.svg{style}"
+        )
+    }
 }
 
 fn main() {
@@ -63,8 +128,9 @@ fn main() {
         let json: Value = serde_json::from_str(&content).expect("failed to parse input JSON");
         let mut report = CoverageReport::new();
         report.analyse(&json);
+        println!("  regions: {}", report.regions_percent);
         println!("functions: {}", report.functions_percent);
         println!("    lines: {}", report.lines_percent);
-        println!("  regions: {}", report.regions_percent);
+        println!("{}", report.badge());
     }
 }
