@@ -25,9 +25,11 @@ impl CoverageReport {
         let Value::Array(array) = data else {
             panic!("expected 'data' array");
         };
-        assert_eq!(1, array.len());
+        if array.len() != 1 {
+            panic!("expected single element in 'data' array");
+        }
         let Some(Value::Object(map)) = array.first() else {
-            panic!("expected object");
+            panic!("expected single object in 'data' array");
         };
         let Some(totals) = map.get("totals") else {
             panic!("expected field 'totals' in 'data");
