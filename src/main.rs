@@ -1,12 +1,12 @@
 use serde_json::{Map, Value};
 
-struct Visitor {
+struct CoverageReport {
     functions_percent: f64,
     lines_percent: f64,
     regions_percent: f64,
 }
 
-impl Visitor {
+impl CoverageReport {
     fn new() -> Self {
         Self {
             functions_percent: 0.0,
@@ -15,7 +15,7 @@ impl Visitor {
         }
     }
 
-    fn visit(&mut self, value: &Value) {
+    fn analyse(&mut self, value: &Value) {
         let Value::Object(map) = value else {
             panic!("expected object");
         };
@@ -35,12 +35,12 @@ impl Visitor {
         let Value::Object(totals) = totals else {
             panic!("expected 'totals' object");
         };
-        self.functions_percent = Self::get_percent(totals, "functions");
-        self.lines_percent = Self::get_percent(totals, "lines");
-        self.regions_percent = Self::get_percent(totals, "regions");
+        self.functions_percent = self.read_percent(totals, "functions");
+        self.lines_percent = self.read_percent(totals, "lines");
+        self.regions_percent = self.read_percent(totals, "regions");
     }
 
-    fn get_percent(map: &Map<String, Value>, key: &str) -> f64 {
+    fn read_percent(&self, map: &Map<String, Value>, key: &str) -> f64 {
         let Some(Value::Object(map)) = map.get(key) else {
             panic!("expected '{key}' object");
         };
@@ -50,7 +50,7 @@ impl Visitor {
         let Some(percent) = percent_number.as_f64() else {
             panic!("expected percent value");
         };
-        (percent * 100.0).trunc() / 100.0
+        percent
     }
 }
 
@@ -59,10 +59,10 @@ fn main() {
     if args.len() == 2 {
         let content = std::fs::read_to_string(&args[1]).expect("failed to read input file");
         let json: Value = serde_json::from_str(&content).expect("failed to parse input JSON");
-        let mut visitor = Visitor::new();
-        visitor.visit(&json);
-        println!("functions: {}", visitor.functions_percent);
-        println!("    lines: {}", visitor.lines_percent);
-        println!("  regions: {}", visitor.regions_percent);
+        let mut report = CoverageReport::new();
+        report.analyse(&json);
+        println!("functions: {}", report.functions_percent);
+        println!("    lines: {}", report.lines_percent);
+        println!("  regions: {}", report.regions_percent);
     }
 }
