@@ -128,13 +128,15 @@ fn main() {
     let mut report = CoverageReport::new();
     report.analyse(&json);
     println!();
-    println!("┌────────────────────┬──────────┐");
-    println!("│      Coverage      │     %    │");
-    println!("├────────────────────┼──────────┤");
-    println!("│ Covered regions    │ {:8.4} │", report.regions_percent);
-    println!("│ Executed functions │ {:8.4} │", report.functions_percent);
-    println!("│ Covered lines      │ {:8.4} │", report.lines_percent);
-    println!("└────────────────────┴──────────┘");
-    println!("\n Badge link: {}\n", report.badge());
+    println!(" ┌────────────────────┬──────────┐");
+    println!(" │      Coverage      │     %    │");
+    println!(" ├────────────────────┼──────────┤");
+    println!(" │ Covered regions    │ {:8.4} │", report.regions_percent);
+    println!(" │ Executed functions │ {:8.4} │", report.functions_percent);
+    println!(" │ Covered lines      │ {:8.4} │", report.lines_percent);
+    println!(" └────────────────────┴──────────┘");
+    println!();
+    println!(" Badge link: {}", report.badge());
+    println!();
   }
 }
