@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "totals": {
+        "functions": {
+          "count": 519,
+          "covered": 486,
+          "percent": 93.64161849710982
+        },
+        "lines": {
+          "count": 6481,
+          "covered": 6215,
+          "percent": 95.8956951087795
+        },
+        "regions": {
+          "count": 9271,
+          "covered": 8778,
+          "notcovered": 493,
+          "percent": 94.68234278934312
+        }
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 use serde_json::{Map, Value};
+use std::{env, fs};
 
 /// Badge styles as defined by `shields.io`.
 enum BadgeStyle {
@@ -88,7 +89,7 @@ impl CoverageReport {
     percent
   }
 
-  /// Returns a link to the `shields.io` badge reporting the coverage.
+  /// Returns a link of the `shields.io` badge reporting the coverage.
   fn badge(&self) -> String {
     let regions = self.regions_percent.trunc();
     let functions = self.functions_percent.trunc();
@@ -120,15 +121,20 @@ impl CoverageReport {
 }
 
 fn main() {
-  let args = std::env::args().collect::<Vec<String>>();
+  let args = env::args().collect::<Vec<String>>();
   if args.len() == 2 {
-    let content = std::fs::read_to_string(&args[1]).expect("failed to read input file");
+    let content = fs::read_to_string(&args[1]).expect("failed to read input file");
     let json: Value = serde_json::from_str(&content).expect("failed to parse input JSON");
     let mut report = CoverageReport::new();
     report.analyse(&json);
-    println!("  regions: {:.4} %", report.regions_percent);
-    println!("functions: {:.4} %", report.functions_percent);
-    println!("    lines: {:.4} %", report.lines_percent);
-    println!("{}", report.badge());
+    println!();
+    println!("┌────────────────────┬──────────┐");
+    println!("│      Coverage      │     %    │");
+    println!("├────────────────────┼──────────┤");
+    println!("│ Covered regions    │ {:8.4} │", report.regions_percent);
+    println!("│ Executed functions │ {:8.4} │", report.functions_percent);
+    println!("│ Covered lines      │ {:8.4} │", report.lines_percent);
+    println!("└────────────────────┴──────────┘");
+    println!("\n Badge link: {}\n", report.badge());
   }
 }

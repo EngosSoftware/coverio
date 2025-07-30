@@ -1,6 +1,6 @@
 [package]
 name = "coverio"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Dariusz Depta <depta@engos.de>"]
 description = "Better code coverage reporting for Rust"
 documentation = "https://docs.rs/coverio"
@@ -19,3 +19,6 @@ exclude = [
 
 [dependencies]
 serde_json = "1.0.141"
+
+[dev-dependencies]
+assert_cmd = "2.0.17"

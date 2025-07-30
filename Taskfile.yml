@@ -31,18 +31,6 @@ tasks:
       - cmd: cargo +stable llvm-cov clean
       - cmd: cargo +stable llvm-cov --no-cfg-coverage --html --open
 
-  cov-cobertura:
-    desc: Generates the code coverage report in "cobertura" format
-    cmds:
-      - cmd: cargo +stable llvm-cov clean
-      - cmd: cargo +stable llvm-cov --no-cfg-coverage --all-features --cobertura --output-path ./target/coverage-cobertura.xml
-
-  cov-json:
-    desc: Generates the code coverage summary report in JSON format
-    cmds:
-      - cmd: cargo +stable llvm-cov clean
-      - cmd: cargo +stable llvm-cov --no-cfg-coverage --all-features --json --output-path ./target/coverage-json.json
-
   cov-json-summary:
     desc: Generates the code coverage summary report in JSON format
     cmds:
@@ -83,8 +71,3 @@ tasks:
     desc: Runs the application
     cmds:
       - cmd: cargo +stable run -- ./target/coverage-json-summary.json
-
-  run-data:
-    desc: Runs the application
-    cmds:
-      - cmd: cargo +stable run -- ./data/coverage.json
