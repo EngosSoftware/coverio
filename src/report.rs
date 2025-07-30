@@ -60,7 +60,7 @@ impl CoverageReport {
     self.lines_percent
   }
 
-  pub fn analyse(&mut self, value: &Value) {
+  pub fn analyze(&mut self, value: &Value) {
     let Value::Object(map) = value else {
       panic!("expected object");
     };

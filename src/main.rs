@@ -10,7 +10,7 @@ fn main() {
     let content = fs::read_to_string(&args[1]).expect("failed to read input file");
     let json: Value = serde_json::from_str(&content).expect("failed to parse input JSON");
     let mut report = CoverageReport::new();
-    report.analyse(&json);
+    report.analyze(&json);
     println!();
     println!(" ┌────────────────────┬──────────┐");
     println!(" │      Coverage      │     %    │");
