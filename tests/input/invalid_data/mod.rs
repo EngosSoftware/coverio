@@ -103,3 +103,16 @@ fn _0008() {
     .stdout("")
     .stderr("Error: expected 'totals' object\n");
 }
+
+#[test]
+fn _0009() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'totals' object\n");
+}
