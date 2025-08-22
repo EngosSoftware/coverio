@@ -6,12 +6,15 @@ const INPUT: &str = r#"
     {
       "totals": {
         "functions": {
+          "count": 10,
           "percent": 100.0
         },
         "lines": {
+          "count": 10,
           "percent": 100.0
         },
         "regions": {
+          "count": 10,
           "percent": 100.0
         }
       }

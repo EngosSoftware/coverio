@@ -39,8 +39,11 @@ impl From<&str> for BadgeStyle {
 }
 
 pub struct CoverageReport {
+  regions_count: u64,
   regions_percent: f64,
+  functions_count: u64,
   functions_percent: f64,
+  lines_count: u64,
   lines_percent: f64,
   threshold_green: f64,
   threshold_red: f64,
@@ -52,8 +55,11 @@ pub struct CoverageReport {
 impl CoverageReport {
   pub fn new() -> Self {
     Self {
+      regions_count: 0,
       regions_percent: 0.0,
+      functions_count: 0,
       functions_percent: 0.0,
+      lines_count: 0,
       lines_percent: 0.0,
       threshold_green: 80.0,
       threshold_red: 50.0,
@@ -97,15 +103,21 @@ impl CoverageReport {
     let Value::Object(totals) = totals else {
       return Err(CoverioError::new("expected 'totals' object"));
     };
-    self.regions_percent = self.read_percent(totals, "regions")?;
-    self.functions_percent = self.read_percent(totals, "functions")?;
-    self.lines_percent = self.read_percent(totals, "lines")?;
+    (self.regions_count, self.regions_percent) = self.read_values(totals, "regions")?;
+    (self.functions_count, self.functions_percent) = self.read_values(totals, "functions")?;
+    (self.lines_count, self.lines_percent) = self.read_values(totals, "lines")?;
     Ok(())
   }
 
-  fn read_percent(&self, map: &Map<String, Value>, key: &str) -> Result<f64, CoverioError> {
+  fn read_values(&self, map: &Map<String, Value>, key: &str) -> Result<(u64, f64), CoverioError> {
     let Some(Value::Object(map)) = map.get(key) else {
       return Err(CoverioError::new(format!("expected '{key}' object")));
+    };
+    let Some(Value::Number(count_number)) = map.get("count") else {
+      return Err(CoverioError::new("expected 'count' number"));
+    };
+    let Some(count) = count_number.as_u64() else {
+      return Err(CoverioError::new("invalid 'count' number"));
     };
     let Some(Value::Number(percent_number)) = map.get("percent") else {
       return Err(CoverioError::new("expected 'percent' number"));
@@ -113,7 +125,7 @@ impl CoverageReport {
     let Some(percent) = percent_number.as_f64() else {
       return Err(CoverioError::new("invalid 'percent' number"));
     };
-    Ok(percent)
+    Ok((count, percent))
   }
 
   /// Returns a link of the `shields.io` badge reporting the coverage.

@@ -3,12 +3,15 @@
     {
       "totals": {
         "functions": {
+          "count": 80,
           "percent": 93.64161849710982
         },
         "lines": {
+          "count": 128,
           "percent": 95.8956951087795
         },
         "regions": {
+          "count": 18,
           "percent": 94.68234278934312
         }
       }
