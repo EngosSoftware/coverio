@@ -114,5 +114,83 @@ fn _0009() {
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'totals' object\n");
+    .stderr("Error: expected 'regions' object\n");
+}
+
+#[test]
+fn _0010() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":[]}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'regions' object\n");
+}
+
+#[test]
+fn _0011() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":{}}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'percent' number\n");
+}
+
+#[test]
+fn _0012() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":{"percent":"u"}}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'percent' number\n");
+}
+
+#[test]
+fn _0013() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":{"percent":1.7976931348623157E+309}}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: invalid 'percent' number\n");
+}
+
+#[test]
+fn _0014() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":{"percent":0.1}}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'functions' object\n");
+}
+
+#[test]
+fn _0015() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .write_stdin(r#"{"data":[{"totals":{"regions":{"percent":0.1},"functions":{"percent":0.1}}}]}"#)
+    .assert()
+    .failure()
+    .code(1)
+    .stdout("")
+    .stderr("Error: expected 'lines' object\n");
 }

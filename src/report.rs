@@ -94,10 +94,10 @@ impl CoverageReport {
       return Err(CoverioError::new(format!("expected '{key}' object")));
     };
     let Some(Value::Number(percent_number)) = map.get("percent") else {
-      return Err(CoverioError::new("expected 'percent' field"));
+      return Err(CoverioError::new("expected 'percent' number"));
     };
     let Some(percent) = percent_number.as_f64() else {
-      return Err(CoverioError::new("expected 'percent' value"));
+      return Err(CoverioError::new("invalid 'percent' number"));
     };
     Ok(percent)
   }
