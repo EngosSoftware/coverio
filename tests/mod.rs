@@ -1,5 +1,5 @@
 use assert_cmd::Command;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 mod input;
 
@@ -22,7 +22,7 @@ impl TestContext {
 macro_rules! test_context {
   () => {{
     let file_name = file!();
-    let current_dir = Path::new(file_name).parent().unwrap().to_path_buf();
+    let current_dir = std::path::Path::new(file_name).parent().unwrap().to_path_buf();
     TestContext { current_dir }
   }};
 }
