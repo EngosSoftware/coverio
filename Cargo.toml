@@ -1,6 +1,6 @@
 [package]
 name = "coverio"
-version = "0.0.4"
+version = "0.0.5-dev"
 authors = ["Dariusz Depta <depta@engos.de>"]
 description = "Better code coverage reporting for Rust crates"
 documentation = "https://docs.rs/coverio"
