@@ -30,9 +30,19 @@
 [mbh-badge]: https://img.shields.io/badge/Made_by-HUMAN-d35400.svg
 [repository-url]: https://github.com/EngosSoftware/coverio
 
+**Better code coverage reporting for Rust crates**
+
 ## Overview
 
-Better code coverage reporting for Rust crates.
+This crate takes advantage of the code coverage summary produced by the following command:
+
+```shell
+$ cargo llvm-cov --json --summary-only
+``` 
+
+and generates a badge like this:
+
+![Code coverage][coverage-badge]
 
 ## License
 
