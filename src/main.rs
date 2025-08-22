@@ -11,10 +11,10 @@ fn get_content_from_file(file_name: &str) -> Result<String, CoverioError> {
   fs::read_to_string(file_name).map_err(|e| CoverioError::new(e.to_string()))
 }
 
-fn get_content_from_stdin() -> String {
+fn get_content_from_stdin() -> Result<String, CoverioError> {
   let mut content = String::new();
-  io::stdin().read_to_string(&mut content).unwrap();
-  content
+  io::stdin().read_to_string(&mut content).map_err(|e| CoverioError::new(e.to_string()))?;
+  Ok(content)
 }
 
 fn process_content(content: String) -> Result<(), CoverioError> {
@@ -41,12 +41,12 @@ fn main() -> Result<(), CoverioError> {
   let content = match input_file {
     Some(file_name) => {
       if file_name == "-" {
-        get_content_from_stdin()
+        get_content_from_stdin()?
       } else {
         get_content_from_file(file_name)?
       }
     }
-    None => get_content_from_stdin(),
+    None => get_content_from_stdin()?,
   };
   process_content(content)
 }
