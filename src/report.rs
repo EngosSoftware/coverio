@@ -130,13 +130,16 @@ impl CoverageReport {
 
   /// Returns a link of the `shields.io` badge reporting the coverage.
   pub fn badge(&self, badge_style: BadgeStyle) -> String {
-    let regions = self.regions_percent.trunc();
-    let functions = self.functions_percent.trunc();
-    let lines = self.lines_percent.trunc();
+    let regions_perc = self.regions_percent.trunc();
+    let functions_perc = self.functions_percent.trunc();
+    let lines_perc = self.lines_percent.trunc();
     let mut min = f64::MAX;
-    for percent in [regions, functions, lines] {
-      if percent < min {
-        min = percent;
+    for (percent, count) in [regions_perc, functions_perc, lines_perc]
+      .iter()
+      .zip([self.regions_count, self.functions_count, self.lines_count])
+    {
+      if *percent < min && count > 0 {
+        min = *percent;
       }
     }
     let color = if min >= self.threshold_green {
@@ -146,8 +149,7 @@ impl CoverageReport {
     } else {
       &self.color_yellow
     };
-    let space = "%20";
-    let separator = format!("{space}%E2%94%82{space}");
+    let separator = separator();
     let prefix = "https://img.shields.io/badge/coverage";
     let query_parameter = badge_style.query_parameter();
     let style = if query_parameter.is_empty() {
@@ -155,6 +157,19 @@ impl CoverageReport {
     } else {
       format!("?style={query_parameter}")
     };
-    format!("{prefix}-{regions}%25{separator}{functions}%25{separator}{lines}%25-{color}.svg{style}")
+    let regions = label_value(regions_perc, self.regions_count);
+    let functions = label_value(functions_perc, self.functions_count);
+    let lines = label_value(lines_perc, self.lines_count);
+    format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
   }
+}
+
+fn separator() -> String {
+  let space = "%20";
+  format!("{space}%E2%94%82{space}")
+}
+
+fn label_value(percent: f64, count: u64) -> String {
+  const DASH: &str = "%E2%80%94";
+  if count > 0 { format!("{percent}%25") } else { DASH.to_string() }
 }
