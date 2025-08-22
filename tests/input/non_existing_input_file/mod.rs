@@ -1,0 +1,14 @@
+use super::*;
+
+#[test]
+fn _0001() {
+  let tc = test_context!();
+
+  tc.command()
+    .current_dir(tc.current_dir())
+    .arg("coverage.json")
+    .assert()
+    .code(1)
+    .stdout("")
+    .stderr("Error: No such file or directory (os error 2)\n");
+}
