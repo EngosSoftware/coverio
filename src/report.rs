@@ -3,6 +3,7 @@ use serde_json::{Map, Value};
 
 /// Badge styles as defined by `shields.io`.
 pub enum BadgeStyle {
+  Default,
   Flat,
   FlatSquare,
   Plastic,
@@ -13,7 +14,8 @@ pub enum BadgeStyle {
 impl BadgeStyle {
   fn query_parameter(&self) -> &'static str {
     match self {
-      BadgeStyle::Flat => "",
+      BadgeStyle::Default => "",
+      BadgeStyle::Flat => "flat",
       BadgeStyle::FlatSquare => "flat-square",
       BadgeStyle::Plastic => "plastic",
       BadgeStyle::ForTheBadge => "for-the-badge",
@@ -45,7 +47,7 @@ impl CoverageReport {
       color_green: "21b577".to_string(),
       color_yellow: "f4b01b".to_string(),
       color_red: "f52020".to_string(),
-      badge_style: BadgeStyle::Flat,
+      badge_style: BadgeStyle::Default,
     }
   }
 
