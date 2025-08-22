@@ -53,6 +53,24 @@ fn _0002() {
   tc.command()
     .current_dir(tc.current_dir())
     .arg("-s")
+    .arg("non-existing-style")
+    .write_stdin(INPUT)
+    .assert()
+    .success()
+    .stdout(format!(
+      r#"{EXPECTED}
+
+"#
+    ))
+    .stderr("");
+}
+
+#[test]
+fn _0003() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .arg("-s")
     .arg("flat")
     .write_stdin(INPUT)
     .assert()
@@ -66,29 +84,11 @@ fn _0002() {
 }
 
 #[test]
-fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("--style=flat-square")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}?style=flat-square
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
 fn _0004() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("flat-square")
+    .arg("--style=flat-square")
     .write_stdin(INPUT)
     .assert()
     .success()
@@ -106,6 +106,24 @@ fn _0005() {
   tc.command()
     .current_dir(tc.current_dir())
     .arg("-s")
+    .arg("flat-square")
+    .write_stdin(INPUT)
+    .assert()
+    .success()
+    .stdout(format!(
+      r#"{EXPECTED}?style=flat-square
+
+"#
+    ))
+    .stderr("");
+}
+
+#[test]
+fn _0006() {
+  let tc = test_context!();
+  tc.command()
+    .current_dir(tc.current_dir())
+    .arg("-s")
     .arg("plastic")
     .write_stdin(INPUT)
     .assert()
@@ -119,7 +137,7 @@ fn _0005() {
 }
 
 #[test]
-fn _0006() {
+fn _0007() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
@@ -137,7 +155,7 @@ fn _0006() {
 }
 
 #[test]
-fn _0007() {
+fn _0008() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
