@@ -13,12 +13,12 @@ fn get_content_from_file(file_name: &str) -> Result<String, CoverioError> {
 
 fn get_content_from_stdin() -> String {
   let mut content = String::new();
-  io::stdin().read_to_string(&mut content).expect("failed to read from stdin");
+  io::stdin().read_to_string(&mut content).unwrap();
   content
 }
 
-fn process_content(content: String) {
-  let json: serde_json::Value = serde_json::from_str(&content).expect("failed to parse input JSON");
+fn process_content(content: String) -> Result<(), CoverioError> {
+  let json: serde_json::Value = serde_json::from_str(&content).map_err(|e| CoverioError::new(e.to_string()))?;
   let mut report = CoverageReport::new();
   report.analyze(&json);
   println!();
@@ -32,6 +32,7 @@ fn process_content(content: String) {
   println!();
   println!(" Badge link: {}", report.badge());
   println!();
+  Ok(())
 }
 
 fn main() -> Result<(), CoverioError> {
@@ -47,6 +48,5 @@ fn main() -> Result<(), CoverioError> {
     }
     None => get_content_from_stdin(),
   };
-  process_content(content);
-  Ok(())
+  process_content(content)
 }

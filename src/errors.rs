@@ -16,13 +16,6 @@ impl fmt::Debug for CoverioError {
   }
 }
 
-impl fmt::Display for CoverioError {
-  /// Implementation of [Display] trait for [CoverioError].
-  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    write!(f, "{}", self.0)
-  }
-}
-
 impl CoverioError {
   /// Creates a new [CoverioError].
   pub fn new(message: String) -> Self {
