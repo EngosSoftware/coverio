@@ -2,6 +2,7 @@ mod cli;
 mod errors;
 mod report;
 
+use crate::report::BadgeStyle;
 use errors::{CoverioError, Result};
 use report::CoverageReport;
 use std::io::Read;
@@ -17,7 +18,7 @@ fn get_content_from_stdin() -> Result<String, CoverioError> {
   Ok(content)
 }
 
-fn process_content(content: String) -> Result<(), CoverioError> {
+fn process_content(content: String, badge_style: BadgeStyle) -> Result<(), CoverioError> {
   let json: serde_json::Value = serde_json::from_str(&content).map_err(|e| CoverioError::new(e.to_string()))?;
   let mut report = CoverageReport::new();
   report.analyze(&json)?;
@@ -30,7 +31,7 @@ fn process_content(content: String) -> Result<(), CoverioError> {
   println!(" │ Covered lines      │ {:8.4} │", report.lines_percent());
   println!(" └────────────────────┴──────────┘");
   println!();
-  println!(" Badge link: {}", report.badge());
+  println!(" Badge link: {}", report.badge(badge_style));
   println!();
   Ok(())
 }
@@ -38,6 +39,7 @@ fn process_content(content: String) -> Result<(), CoverioError> {
 fn main() -> Result<(), CoverioError> {
   let matches = cli::get_command().get_matches();
   let input_file = cli::input_file(&matches);
+  let badge_style = cli::badge_style(&matches);
   let content = match input_file {
     Some(file_name) => {
       if file_name == "-" {
@@ -48,5 +50,5 @@ fn main() -> Result<(), CoverioError> {
     }
     None => get_content_from_stdin()?,
   };
-  process_content(content)
+  process_content(content, badge_style)
 }

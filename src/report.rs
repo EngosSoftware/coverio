@@ -2,6 +2,7 @@ use crate::errors::{CoverioError, Result};
 use serde_json::{Map, Value};
 
 /// Badge styles as defined by `shields.io`.
+#[derive(Debug)]
 pub enum BadgeStyle {
   Default,
   Flat,
@@ -24,6 +25,19 @@ impl BadgeStyle {
   }
 }
 
+impl From<&str> for BadgeStyle {
+  fn from(value: &str) -> Self {
+    match value {
+      "flat" => Self::Flat,
+      "flat-square" => Self::FlatSquare,
+      "plastic" => Self::Plastic,
+      "for-the-badge" => Self::ForTheBadge,
+      "social" => Self::Social,
+      _ => Self::Default,
+    }
+  }
+}
+
 pub struct CoverageReport {
   regions_percent: f64,
   functions_percent: f64,
@@ -33,7 +47,6 @@ pub struct CoverageReport {
   color_green: String,
   color_yellow: String,
   color_red: String,
-  badge_style: BadgeStyle,
 }
 
 impl CoverageReport {
@@ -47,7 +60,6 @@ impl CoverageReport {
       color_green: "21b577".to_string(),
       color_yellow: "f4b01b".to_string(),
       color_red: "f52020".to_string(),
-      badge_style: BadgeStyle::Default,
     }
   }
 
@@ -105,7 +117,7 @@ impl CoverageReport {
   }
 
   /// Returns a link of the `shields.io` badge reporting the coverage.
-  pub fn badge(&self) -> String {
+  pub fn badge(&self, badge_style: BadgeStyle) -> String {
     let regions = self.regions_percent.trunc();
     let functions = self.functions_percent.trunc();
     let lines = self.lines_percent.trunc();
@@ -125,7 +137,7 @@ impl CoverageReport {
     let space = "%20";
     let separator = format!("{space}%E2%94%82{space}");
     let prefix = "https://img.shields.io/badge/coverage";
-    let query_parameter = self.badge_style.query_parameter();
+    let query_parameter = badge_style.query_parameter();
     let style = if query_parameter.is_empty() {
       "".to_string()
     } else {
