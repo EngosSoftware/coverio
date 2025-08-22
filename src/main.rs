@@ -20,7 +20,7 @@ fn get_content_from_stdin() -> Result<String, CoverioError> {
 fn process_content(content: String) -> Result<(), CoverioError> {
   let json: serde_json::Value = serde_json::from_str(&content).map_err(|e| CoverioError::new(e.to_string()))?;
   let mut report = CoverageReport::new();
-  report.analyze(&json);
+  report.analyze(&json)?;
   println!();
   println!(" ┌────────────────────┬──────────┐");
   println!(" │      Coverage      │     %    │");

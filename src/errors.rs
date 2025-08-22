@@ -18,7 +18,7 @@ impl fmt::Debug for CoverioError {
 
 impl CoverioError {
   /// Creates a new [CoverioError].
-  pub fn new(message: String) -> Self {
-    Self(message)
+  pub fn new(message: impl AsRef<str>) -> Self {
+    Self(message.as_ref().into())
   }
 }

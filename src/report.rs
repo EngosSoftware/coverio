@@ -1,3 +1,4 @@
+use crate::errors::{CoverioError, Result};
 use serde_json::{Map, Value};
 
 /// Badge styles as defined by `shields.io`.
@@ -60,44 +61,45 @@ impl CoverageReport {
     self.lines_percent
   }
 
-  pub fn analyze(&mut self, value: &Value) {
+  pub fn analyze(&mut self, value: &Value) -> Result<(), CoverioError> {
     let Value::Object(map) = value else {
-      panic!("expected object");
+      return Err(CoverioError::new("expected object"));
     };
     let Some(data) = map.get("data") else {
-      panic!("expected field 'data'");
+      return Err(CoverioError::new("expected field 'data'"));
     };
     let Value::Array(array) = data else {
-      panic!("expected 'data' array");
+      return Err(CoverioError::new("expected 'data' array"));
     };
     if array.len() != 1 {
-      panic!("expected single element in 'data' array");
+      return Err(CoverioError::new("expected single element in 'data' array"));
     }
     let Some(Value::Object(map)) = array.first() else {
-      panic!("expected single object in 'data' array");
+      return Err(CoverioError::new("expected single object in 'data' array"));
     };
     let Some(totals) = map.get("totals") else {
-      panic!("expected field 'totals' in 'data");
+      return Err(CoverioError::new("expected field 'totals' in 'data` object"));
     };
     let Value::Object(totals) = totals else {
-      panic!("expected 'totals' object");
+      return Err(CoverioError::new("expected 'totals' object"));
     };
-    self.regions_percent = self.read_percent(totals, "regions");
-    self.functions_percent = self.read_percent(totals, "functions");
-    self.lines_percent = self.read_percent(totals, "lines");
+    self.regions_percent = self.read_percent(totals, "regions")?;
+    self.functions_percent = self.read_percent(totals, "functions")?;
+    self.lines_percent = self.read_percent(totals, "lines")?;
+    Ok(())
   }
 
-  fn read_percent(&self, map: &Map<String, Value>, key: &str) -> f64 {
+  fn read_percent(&self, map: &Map<String, Value>, key: &str) -> Result<f64, CoverioError> {
     let Some(Value::Object(map)) = map.get(key) else {
-      panic!("expected '{key}' object");
+      return Err(CoverioError::new(format!("expected '{key}' object")));
     };
     let Some(Value::Number(percent_number)) = map.get("percent") else {
-      panic!("expected percent field");
+      return Err(CoverioError::new("expected 'percent' field"));
     };
     let Some(percent) = percent_number.as_f64() else {
-      panic!("expected percent value");
+      return Err(CoverioError::new("expected 'percent' value"));
     };
-    percent
+    Ok(percent)
   }
 
   /// Returns a link of the `shields.io` badge reporting the coverage.
