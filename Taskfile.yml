@@ -35,7 +35,14 @@ tasks:
     desc: Generates the code coverage summary report in JSON format
     cmds:
       - cmd: cargo +stable llvm-cov clean
-      - cmd: cargo +stable llvm-cov --no-cfg-coverage --all-features --json --summary-only --output-path ./target/coverage.json
+      - cmd: cargo +stable llvm-cov --no-cfg-coverage --json --summary-only | jq
+
+  cov-badge:
+    desc: Generates the code coverage badge
+    cmds:
+      - cmd: cargo +stable build
+      - cmd: cargo +stable llvm-cov clean
+      - cmd: cargo +stable llvm-cov --no-cfg-coverage --json --summary-only | ./target/debug/coverio
 
   doc:
     desc: Generates documentation
