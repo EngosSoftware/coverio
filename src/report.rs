@@ -150,7 +150,8 @@ impl CoverageReport {
       &self.color_yellow
     };
     let separator = separator();
-    let prefix = "https://img.shields.io/badge/coverage";
+    let label = "cov"; //TODO This could be parametrized by command line parameter.
+    let prefix = format!("https://img.shields.io/badge/{}", label);
     let query_parameter = badge_style.query_parameter();
     let style = if query_parameter.is_empty() {
       "".to_string()

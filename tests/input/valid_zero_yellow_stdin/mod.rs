@@ -32,7 +32,7 @@ const EXPECTED: &str = r"
  │ Covered lines      │  55.5555 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/coverage-%E2%80%94%20%E2%94%82%20%E2%80%94%20%E2%94%82%2055%25-f4b01b.svg
+ Badge link: https://img.shields.io/badge/cov-%E2%80%94%20%E2%94%82%20%E2%80%94%20%E2%94%82%2055%25-f4b01b.svg
 
 ";
 

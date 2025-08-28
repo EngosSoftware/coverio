@@ -32,7 +32,7 @@ const EXPECTED: &str = r"
  │ Covered lines      │ 100.0000 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/coverage-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg";
+ Badge link: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg";
 
 #[test]
 fn _0001() {
