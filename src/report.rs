@@ -1,14 +1,32 @@
 use crate::errors::{CoverioError, Result};
 use serde_json::{Map, Value};
 
+/// Unicode character ` ` (U+0020) Space (SP)
+const SPACE: &str = "%20";
+
+/// Unicode character `%` (U+0025) Percent Sign
+const PERCENT: &str = "%25";
+
+/// Unicode character `│` (U+2502) Box Drawings Light Vertical
+const BOX_DRAWINGS_LIGHT_VERTICAL: &str = "%E2%94%82";
+
+/// Unicode character `—` (U+2014) Em Dash.
+const EM_DASH: &str = "%E2%80%94";
+
 /// Badge styles as defined by `shields.io`.
 #[derive(Debug)]
 pub enum BadgeStyle {
+  /// Default badge style, currently `flat`.
   Default,
+  /// `flat` style.
   Flat,
+  /// `flat-square` style.
   FlatSquare,
+  /// `plastic` style.
   Plastic,
+  /// `for-the-badge` style.
   ForTheBadge,
+  /// `social` style.
   Social,
 }
 
@@ -38,18 +56,51 @@ impl From<&str> for BadgeStyle {
   }
 }
 
+pub enum SeparatorStyle {
+  /// Single space.
+  Space,
+  /// Vertical bar.
+  Bar,
+  /// Vertical bar with space before and after.
+  SpacedBar,
+}
+
+impl From<&str> for SeparatorStyle {
+  fn from(value: &str) -> Self {
+    match value {
+      "space" => Self::Space,
+      "bar" => Self::Bar,
+      "spaced-bar" => Self::SpacedBar,
+      _ => Self::SpacedBar,
+    }
+  }
+}
+
 pub struct CoverageReport {
+  /// Total number of regions.
   regions_count: u64,
+  /// Percent of regions covered.
   regions_percent: f64,
+  /// Total number of functions.
   functions_count: u64,
+  /// Percent of functions covered.
   functions_percent: f64,
+  /// Total number of lines.
   lines_count: u64,
+  /// Percent of lines covered.
   lines_percent: f64,
-  threshold_green: f64,
-  threshold_red: f64,
-  color_green: String,
-  color_yellow: String,
-  color_red: String,
+  /// Threshold where high code coverage starts.
+  threshold_high: f64,
+  /// Threshold where moderate code coverage starts.
+  threshold_moderate: f64,
+  /// Color used for high code coverage.
+  color_high: String,
+  /// Color used for moderate code coverage.
+  color_moderate: String,
+  /// Color used for low code coverage.
+  color_low: String,
+  /// Flag indicating if the percent sign should be visible.
+  show_percent_sign: bool,
 }
 
 impl CoverageReport {
@@ -61,11 +112,12 @@ impl CoverageReport {
       functions_percent: 0.0,
       lines_count: 0,
       lines_percent: 0.0,
-      threshold_green: 80.0,
-      threshold_red: 50.0,
-      color_green: "21b577".to_string(),
-      color_yellow: "f4b01b".to_string(),
-      color_red: "f52020".to_string(),
+      threshold_high: 80.0,
+      threshold_moderate: 50.0,
+      color_high: "21b577".to_string(),
+      color_moderate: "f4b01b".to_string(),
+      color_low: "f52020".to_string(),
+      show_percent_sign: true,
     }
   }
 
@@ -129,7 +181,7 @@ impl CoverageReport {
   }
 
   /// Returns a link of the `shields.io` badge reporting the coverage.
-  pub fn badge(&self, badge_style: BadgeStyle) -> String {
+  pub fn badge(&self, badge_style: BadgeStyle, badge_label: String, separator_style: SeparatorStyle) -> String {
     let regions_perc = self.regions_percent.trunc();
     let functions_perc = self.functions_percent.trunc();
     let lines_perc = self.lines_percent.trunc();
@@ -142,35 +194,42 @@ impl CoverageReport {
         min = *percent;
       }
     }
-    let color = if min >= self.threshold_green {
-      &self.color_green
-    } else if min < self.threshold_red {
-      &self.color_red
+    let color = if min >= self.threshold_high {
+      &self.color_high
+    } else if min < self.threshold_moderate {
+      &self.color_low
     } else {
-      &self.color_yellow
+      &self.color_moderate
     };
-    let separator = separator();
-    let label = "cov"; //TODO This could be parametrized by command line parameter.
-    let prefix = format!("https://img.shields.io/badge/{}", label);
+    let separator = self.separator(separator_style);
+    let prefix = format!("https://img.shields.io/badge/{}", badge_label);
     let query_parameter = badge_style.query_parameter();
     let style = if query_parameter.is_empty() {
       "".to_string()
     } else {
       format!("?style={query_parameter}")
     };
-    let regions = label_value(regions_perc, self.regions_count);
-    let functions = label_value(functions_perc, self.functions_count);
-    let lines = label_value(lines_perc, self.lines_count);
+    let regions = self.label_value(regions_perc, self.regions_count);
+    let functions = self.label_value(functions_perc, self.functions_count);
+    let lines = self.label_value(lines_perc, self.lines_count);
     format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
   }
-}
 
-fn separator() -> String {
-  let space = "%20";
-  format!("{space}%E2%94%82{space}")
-}
+  /// Returns the coverage values separator.
+  fn separator(&self, separator_style: SeparatorStyle) -> String {
+    match separator_style {
+      SeparatorStyle::Space => SPACE.to_string(),
+      SeparatorStyle::Bar => BOX_DRAWINGS_LIGHT_VERTICAL.to_string(),
+      SeparatorStyle::SpacedBar => format!("{SPACE}{BOX_DRAWINGS_LIGHT_VERTICAL}{SPACE}"),
+    }
+  }
 
-fn label_value(percent: f64, count: u64) -> String {
-  const DASH: &str = "%E2%80%94";
-  if count > 0 { format!("{percent}%25") } else { DASH.to_string() }
+  /// Returns the formatted coverage value.
+  fn label_value(&self, value: f64, count: u64) -> String {
+    if count > 0 {
+      if self.show_percent_sign { format!("{value}{PERCENT}") } else { format!("{value}") }
+    } else {
+      EM_DASH.to_string()
+    }
+  }
 }
