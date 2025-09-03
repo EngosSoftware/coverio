@@ -8,7 +8,7 @@ use report::CoverageReport;
 use std::io::Read;
 use std::{fs, io};
 
-fn get_content_from_file(file_name: &str) -> Result<String, CoverioError> {
+fn get_content_from_file(file_name: String) -> Result<String, CoverioError> {
   fs::read_to_string(file_name).map_err(|e| CoverioError::new(e.to_string()))
 }
 
@@ -37,6 +37,27 @@ fn process_content(content: String, badge_properties: BadgeProperties) -> Result
   Ok(badge_link)
 }
 
+fn update_markdown_file(badge_link: String, markdown_tag: Option<String>, markdown_file: Option<String>) -> Result<(), CoverioError> {
+  if let Some(markdown_tag) = markdown_tag {
+    let markdown_file = markdown_file.unwrap_or("README.md".to_string());
+    let prefix = format!("[{}]: ", markdown_tag);
+    let replace = |line: &str| {
+      if line.starts_with(&prefix) {
+        format!("{}{}", prefix, badge_link)
+      } else {
+        line.to_string()
+      }
+    };
+    let content = fs::read_to_string(markdown_file.clone())
+      .map_err(|e| CoverioError::new(e.to_string()))?
+      .lines()
+      .map(replace)
+      .collect::<String>();
+    fs::write(markdown_file, content).map_err(|e| CoverioError::new(e.to_string()))?;
+  }
+  Ok(())
+}
+
 fn main() -> Result<(), CoverioError> {
   let matches = cli::get_command().get_matches();
   let input_file = cli::input_file(&matches);
@@ -56,6 +77,9 @@ fn main() -> Result<(), CoverioError> {
     }
     None => get_content_from_stdin()?,
   };
-  let _ = process_content(content, badge_properties)?;
+  let badge_link = process_content(content, badge_properties)?;
+  let markdown_tag = cli::markdown_tag(&matches);
+  let markdown_file = cli::markdown_file(&matches);
+  update_markdown_file(badge_link, markdown_tag, markdown_file)?;
   Ok(())
 }

@@ -57,7 +57,7 @@ pub fn get_command() -> Command {
         .display_order(2),
     )
     .arg(
-      arg!(--"separator" <LABEL>)
+      arg!(--"separator" <SEPARATOR>)
         .short('r')
         .help(HELP_SEPARATOR)
         .long_help(LONG_HELP_SEPARATOR)
@@ -84,11 +84,29 @@ pub fn get_command() -> Command {
         .action(ArgAction::SetTrue)
         .display_order(5),
     )
+    .arg(
+      arg!(--"tag" <TAG>)
+        .short('t')
+        .help(HELP_SQUASH)
+        .long_help(LONG_HELP_SQUASH)
+        .required(false)
+        .action(ArgAction::Set)
+        .display_order(6),
+    )
+    .arg(
+      arg!(--"file" <FILE>)
+        .short('f')
+        .help(HELP_SQUASH)
+        .long_help(LONG_HELP_SQUASH)
+        .required(false)
+        .action(ArgAction::Set)
+        .display_order(7),
+    )
 }
 
 /// Returns the name of the optional input file.
-pub fn input_file(matches: &ArgMatches) -> Option<&String> {
-  matches.get_one::<String>("FILE")
+pub fn input_file(matches: &ArgMatches) -> Option<String> {
+  matches.get_one::<String>("FILE").cloned()
 }
 
 /// Returns the badge style.
@@ -106,10 +124,21 @@ pub fn separator_style(matches: &ArgMatches) -> SeparatorStyle {
   matches.get_one::<String>("separator").unwrap().as_str().into()
 }
 
+/// Returns flag indicating if percent sign should be hidden.
 pub fn no_percent_sign(matches: &ArgMatches) -> bool {
   matches.get_one::<bool>("no-percent-sign").unwrap().to_owned()
 }
 
 pub fn squash(matches: &ArgMatches) -> bool {
   matches.get_one::<bool>("squash").unwrap().to_owned()
+}
+
+/// Returns the badge tag in Markdown file.
+pub fn markdown_tag(matches: &ArgMatches) -> Option<String> {
+  matches.get_one::<String>("tag").cloned()
+}
+
+/// Returns the badge tag in Markdown file.
+pub fn markdown_file(matches: &ArgMatches) -> Option<String> {
+  matches.get_one::<String>("file").cloned()
 }
