@@ -1,7 +1,7 @@
 # coverio
 
 [![coverio][crates-badge]][crates-url]
-![code-coverage][coverage-badge]
+![code-coverage][cov-badge-coverio]
 ![build-Linux][build-badge-linux]
 ![build-Windows][build-badge-windows]
 ![build-MacOs][build-badge-macos]
