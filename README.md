@@ -1,15 +1,15 @@
 # coverio
 
-[![Crates.io][crates-badge]][crates-url]
-![Code coverage][coverage-badge]
-![build Linux][build-badge-linux]
-![build Windows][build-badge-windows]
-![build MacOs][build-badge-macos]
-![build MacOs arm64][build-badge-macos-arm64]
-[![MIT licensed][mit-badge]][mit-license-url]
-[![Apache 2.0 licensed][apache-badge]][apache-license-url]
-[![Contributor Covenant][cc-badge]][cc-url]
-[![Made by Human][mbh-badge]][cc-url]
+[![coverio][crates-badge]][crates-url]
+![code-coverage][coverage-badge]
+![build-Linux][build-badge-linux]
+![build-Windows][build-badge-windows]
+![build-MacOs][build-badge-macos]
+![build-MacOs-arm64][build-badge-macos-arm64]
+[![MIT-license][mit-badge]][mit-license-url]
+[![Apache-2.0-license][apache-badge]][apache-license-url]
+[![contributor-covenant][cc-badge]][cc-url]
+[![made-by-human][mbh-badge]][mbh-url]
 
 [crates-badge]: https://img.shields.io/crates/v/coverio.svg
 [crates-url]: https://crates.io/crates/coverio
@@ -24,10 +24,12 @@
 [build-badge-windows]: https://github.com/EngosSoftware/coverio/actions/workflows/build-windows.yml/badge.svg
 [build-badge-macos]: https://github.com/EngosSoftware/coverio/actions/workflows/build-macos.yml/badge.svg
 [build-badge-macos-arm64]: https://github.com/EngosSoftware/coverio/actions/workflows/build-macos-arm64.yml/badge.svg
-[coverage-badge]: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+[cov-badge-coverio]: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+[cov-url]: https://crates.io/crates/coverio
 [cc-badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
 [cc-url]: https://github.com/EngosSoftware/coverio/blob/main/CODE_OF_CONDUCT.md
 [mbh-badge]: https://img.shields.io/badge/Made_by-HUMAN-d35400.svg
+[mbh-url]: https://github.com/DariuszDepta
 [repository-url]: https://github.com/EngosSoftware/coverio
 
 **Better code coverage reporting for Rust crates**
