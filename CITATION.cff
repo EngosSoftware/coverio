@@ -10,5 +10,5 @@ authors:
 version: 0.0.6
 date-released: 2025-07-28
 license: Apache-2.0, MIT
-repository-code: "https://github.com/EngosSoftware/coverio"
-url: "https://github.com/EngosSoftware/coverio"
+repository-code: https://github.com/EngosSoftware/coverio
+url: https://crates.io/crates/coverio
