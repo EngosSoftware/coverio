@@ -7,3 +7,5 @@ authors:
 title: "Better code coverage reporting for Rust crates"
 version: 0.0.6
 date-released: 2025-07-28
+repository: "https://github.com/EngosSoftware/coverio"
+url: "https://github.com/EngosSoftware/coverio"
