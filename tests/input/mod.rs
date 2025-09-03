@@ -6,6 +6,7 @@ mod invalid_stdin;
 mod no_percent_sign;
 mod non_existing_input_file;
 mod separators;
+mod squash;
 mod styles;
 mod valid_green_stdin;
 mod valid_input_file;

@@ -28,6 +28,10 @@ pub const HELP_NO_PERCENT_SIGN: &str = r#"Hide percent sign for coverage values"
 
 pub const LONG_HELP_NO_PERCENT_SIGN: &str = r#"Hide percent sign for coverage values"#;
 
+pub const HELP_SQUASH: &str = r#"Show one value when all equal"#;
+
+pub const LONG_HELP_SQUASH: &str = r#"Show one value when all equal"#;
+
 /// Returns command-line arguments matches.
 pub fn get_command() -> Command {
   command!()
@@ -71,6 +75,15 @@ pub fn get_command() -> Command {
         .action(ArgAction::SetTrue)
         .display_order(4),
     )
+    .arg(
+      arg!(--"squash")
+        .short('q')
+        .help(HELP_SQUASH)
+        .long_help(LONG_HELP_SQUASH)
+        .required(false)
+        .action(ArgAction::SetTrue)
+        .display_order(5),
+    )
 }
 
 /// Returns the name of the optional input file.
@@ -95,4 +108,8 @@ pub fn separator_style(matches: &ArgMatches) -> SeparatorStyle {
 
 pub fn no_percent_sign(matches: &ArgMatches) -> bool {
   matches.get_one::<bool>("no-percent-sign").unwrap().to_owned()
+}
+
+pub fn squash(matches: &ArgMatches) -> bool {
+  matches.get_one::<bool>("squash").unwrap().to_owned()
 }

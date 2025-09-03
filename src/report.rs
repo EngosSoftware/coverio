@@ -19,6 +19,7 @@ pub struct BadgeProperties {
   badge_label: String,
   separator_style: SeparatorStyle,
   no_percent_sign: bool,
+  squash: bool,
 }
 
 impl BadgeProperties {
@@ -29,6 +30,7 @@ impl BadgeProperties {
       badge_label: "cov".to_string(),
       separator_style: Default::default(),
       no_percent_sign: false,
+      squash: false,
     }
   }
 
@@ -49,6 +51,11 @@ impl BadgeProperties {
 
   pub fn with_no_percent_sign(mut self, no_percent_sign: bool) -> Self {
     self.no_percent_sign = no_percent_sign;
+    self
+  }
+
+  pub fn with_squash(mut self, squash: bool) -> Self {
+    self.squash = squash;
     self
   }
 }
@@ -223,6 +230,7 @@ impl CoverageReport {
     let regions_perc = self.regions_percent.trunc();
     let functions_perc = self.functions_percent.trunc();
     let lines_perc = self.lines_percent.trunc();
+    let equal_perc = self.regions_percent == self.functions_percent && self.functions_percent == self.lines_percent;
     let mut min = f64::MAX;
     for (percent, count) in [regions_perc, functions_perc, lines_perc]
       .iter()
@@ -250,7 +258,11 @@ impl CoverageReport {
     let regions = self.label_value(regions_perc, self.regions_count, properties.no_percent_sign);
     let functions = self.label_value(functions_perc, self.functions_count, properties.no_percent_sign);
     let lines = self.label_value(lines_perc, self.lines_count, properties.no_percent_sign);
-    format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
+    if properties.squash && equal_perc {
+      format!("{prefix}-{lines}-{color}.svg{style}")
+    } else {
+      format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
+    }
   }
 
   /// Returns the coverage values separator.
