@@ -54,7 +54,7 @@ fn update_markdown_file(badge_link: String, markdown_tag: Option<String>, markdo
       .map(replace)
       .collect::<Vec<String>>()
       .join("\n");
-    fs::write(markdown_file, content).map_err(|e| CoverioError::new(e.to_string()))?;
+    fs::write(markdown_file, format!("{}\n", content)).map_err(|e| CoverioError::new(e.to_string()))?;
   }
   Ok(())
 }
