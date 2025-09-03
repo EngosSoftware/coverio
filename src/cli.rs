@@ -13,8 +13,7 @@ cargo llvm-cov --json --summary-only"#;
 pub const HELP_STYLE: &str = r#"Specify the badge style"#;
 
 pub const LONG_HELP_STYLE: &str = r#"Specify the badge style.
-Accepted styles are: flat, flat-square, plastic, for-the-badge or social.
-Default style is 'flat'."#;
+Valid styles: 'flat', 'flat-square', 'plastic', 'for-the-badge', 'social'"#;
 
 pub const HELP_LABEL: &str = r#"Specify the badge label"#;
 
@@ -23,7 +22,7 @@ pub const LONG_HELP_LABEL: &str = r#"Specify the badge label."#;
 pub const HELP_SEPARATOR: &str = r#"Specify coverage value separator"#;
 
 pub const LONG_HELP_SEPARATOR: &str = r#"Specify coverage value separator.
-Accepted separators are: space, bar, spaced-bar."#;
+Valid separators: 'space', 'bar', 'spaced-bar'"#;
 
 /// Returns command-line arguments matches.
 pub fn get_command() -> Command {
@@ -36,6 +35,7 @@ pub fn get_command() -> Command {
         .long_help(LONG_HELP_STYLE)
         .required(false)
         .action(ArgAction::Set)
+        .default_value("flat")
         .display_order(1),
     )
     .arg(
@@ -67,11 +67,7 @@ pub fn input_file(matches: &ArgMatches) -> Option<&String> {
 
 /// Returns the badge style.
 pub fn badge_style(matches: &ArgMatches) -> BadgeStyle {
-  if let Some(style) = matches.get_one::<String>("style") {
-    style.as_str().into()
-  } else {
-    BadgeStyle::Default
-  }
+  matches.get_one::<String>("style").unwrap().as_str().into()
 }
 
 /// Returns the badge label.

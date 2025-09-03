@@ -16,8 +16,6 @@ const EM_DASH: &str = "%E2%80%94";
 /// Badge styles as defined by `shields.io`.
 #[derive(Debug)]
 pub enum BadgeStyle {
-  /// Default badge style, currently `flat`.
-  Default,
   /// `flat` style.
   Flat,
   /// `flat-square` style.
@@ -31,10 +29,10 @@ pub enum BadgeStyle {
 }
 
 impl BadgeStyle {
+  /// Returns a query parameter based on badge style.
   fn query_parameter(&self) -> &'static str {
     match self {
-      BadgeStyle::Default => "",
-      BadgeStyle::Flat => "flat",
+      BadgeStyle::Flat => "",
       BadgeStyle::FlatSquare => "flat-square",
       BadgeStyle::Plastic => "plastic",
       BadgeStyle::ForTheBadge => "for-the-badge",
@@ -51,7 +49,7 @@ impl From<&str> for BadgeStyle {
       "plastic" => Self::Plastic,
       "for-the-badge" => Self::ForTheBadge,
       "social" => Self::Social,
-      _ => Self::Default,
+      _ => Self::Flat,
     }
   }
 }

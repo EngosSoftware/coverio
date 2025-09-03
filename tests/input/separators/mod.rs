@@ -32,7 +32,7 @@ const EXPECTED: &str = r"
  │ Covered lines      │ 100.0000 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg";
+ Badge link: https://img.shields.io/badge/cov-";
 
 #[test]
 fn _0001() {
@@ -43,7 +43,7 @@ fn _0001() {
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}
+      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
@@ -55,13 +55,13 @@ fn _0002() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("non-existing-style")
+    .arg("-r")
+    .arg("non-existing-separator")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}
+      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
@@ -73,13 +73,13 @@ fn _0003() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("flat")
+    .arg("-r")
+    .arg("spaced-bar")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}
+      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
@@ -91,12 +91,13 @@ fn _0004() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("--style=flat-square")
+    .arg("-r")
+    .arg("bar")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}?style=flat-square
+      r#"{EXPECTED}100%25%E2%94%82100%25%E2%94%82100%25-21b577.svg
 
 "#
     ))
@@ -108,67 +109,13 @@ fn _0005() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("flat-square")
+    .arg("-r")
+    .arg("space")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}?style=flat-square
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0006() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("plastic")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}?style=plastic
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0007() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("for-the-badge")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}?style=for-the-badge
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0008() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("-s")
-    .arg("social")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}?style=social
+      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
 "#
     ))
