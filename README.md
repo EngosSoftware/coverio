@@ -40,7 +40,7 @@ This crate takes the code coverage summary produced by the following command:
 
 ```shell
 $ cargo llvm-cov --json --summary-only
-``` 
+```
 
 and generates a badge like this:
 
