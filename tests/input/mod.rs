@@ -5,6 +5,7 @@ mod invalid_input_file;
 mod invalid_stdin;
 mod no_percent_sign;
 mod non_existing_input_file;
+mod replacement;
 mod separators;
 mod squash;
 mod styles;
