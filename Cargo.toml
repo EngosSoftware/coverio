@@ -1,6 +1,6 @@
 [package]
 name = "coverio"
-version = "0.0.6-dev"
+version = "0.0.6"
 authors = ["Dariusz Depta <depta@engos.de>"]
 description = "Better code coverage reporting for Rust crates"
 documentation = "https://docs.rs/coverio"
@@ -15,11 +15,12 @@ exclude = [
     ".github/",
     ".gitignore",
     "NOTES_AT_FUTURE_ME.md",
-    "CODE_OF_CONDUCT.md"
+    "CODE_OF_CONDUCT.md",
+    "CITATION.cff"
 ]
 
 [dependencies]
-clap = { version = "4.5.46", features = ["cargo"] }
+clap = { version = "4.5.47", features = ["cargo"] }
 serde_json = { version = "1.0.143", features = ["arbitrary_precision"] }
 
 [dev-dependencies]

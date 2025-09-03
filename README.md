@@ -44,7 +44,7 @@ $ cargo llvm-cov --json --summary-only
 
 and generates a badge like this:
 
-![Code coverage][cov-badge-coverio]
+![example-1](https://img.shields.io/badge/cov-94%25%20%E2%94%82%2093%25%20%E2%94%82%2095%25-21b577.svg)
 
 ## License
 
