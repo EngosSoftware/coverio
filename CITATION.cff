@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Depta
+    given-names: Dariusz
+    orcid: https://orcid.org/0009-0009-0117-6589
+title: "Better code coverage reporting for Rust crates"
+version: 0.0.6
+date-released: 2025-07-28
