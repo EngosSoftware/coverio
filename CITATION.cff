@@ -6,9 +6,7 @@ authors:
   - family-names: Depta
     given-names: Dariusz
     orcid: https://orcid.org/0009-0009-0117-6589
-
 version: 0.0.6
 date-released: 2025-07-28
 license: Apache-2.0, MIT
-repository-code: https://github.com/EngosSoftware/coverio
-url: https://crates.io/crates/coverio
+url: https://github.com/EngosSoftware/coverio
