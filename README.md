@@ -36,7 +36,7 @@
 
 ## Overview
 
-This crate takes advantage of the code coverage summary produced by the following command:
+This crate takes the code coverage summary produced by the following command:
 
 ```shell
 $ cargo llvm-cov --json --summary-only
