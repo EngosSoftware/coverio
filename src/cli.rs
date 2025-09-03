@@ -24,6 +24,10 @@ pub const HELP_SEPARATOR: &str = r#"Specify coverage value separator"#;
 pub const LONG_HELP_SEPARATOR: &str = r#"Specify coverage value separator.
 Valid separators: 'space', 'bar', 'spaced-bar'"#;
 
+pub const HELP_NO_PERCENT_SIGN: &str = r#"Hide percent sign for coverage values"#;
+
+pub const LONG_HELP_NO_PERCENT_SIGN: &str = r#"Hide percent sign for coverage values"#;
+
 /// Returns command-line arguments matches.
 pub fn get_command() -> Command {
   command!()
@@ -58,6 +62,15 @@ pub fn get_command() -> Command {
         .default_value("spaced-bar")
         .display_order(3),
     )
+    .arg(
+      arg!(--"no-percent-sign")
+        .short('n')
+        .help(HELP_NO_PERCENT_SIGN)
+        .long_help(LONG_HELP_NO_PERCENT_SIGN)
+        .required(false)
+        .action(ArgAction::SetTrue)
+        .display_order(4),
+    )
 }
 
 /// Returns the name of the optional input file.
@@ -78,4 +91,8 @@ pub fn badge_label(matches: &ArgMatches) -> String {
 /// Returns the coverage value separator.
 pub fn separator_style(matches: &ArgMatches) -> SeparatorStyle {
   matches.get_one::<String>("separator").unwrap().as_str().into()
+}
+
+pub fn no_percent_sign(matches: &ArgMatches) -> bool {
+  matches.get_one::<bool>("no-percent-sign").unwrap().to_owned()
 }

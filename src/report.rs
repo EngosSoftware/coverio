@@ -13,10 +13,51 @@ const BOX_DRAWINGS_LIGHT_VERTICAL: &str = "%E2%94%82";
 /// Unicode character `—` (U+2014) Em Dash.
 const EM_DASH: &str = "%E2%80%94";
 
+/// Badge properties.
+pub struct BadgeProperties {
+  badge_style: BadgeStyle,
+  badge_label: String,
+  separator_style: SeparatorStyle,
+  no_percent_sign: bool,
+}
+
+impl BadgeProperties {
+  /// Creates new instance of [BadgeProperties].
+  pub fn new() -> Self {
+    Self {
+      badge_style: Default::default(),
+      badge_label: "cov".to_string(),
+      separator_style: Default::default(),
+      no_percent_sign: false,
+    }
+  }
+
+  pub fn with_badge_style(mut self, badge_style: BadgeStyle) -> Self {
+    self.badge_style = badge_style;
+    self
+  }
+
+  pub fn with_badge_label(mut self, badge_label: String) -> Self {
+    self.badge_label = badge_label;
+    self
+  }
+
+  pub fn with_separator_style(mut self, separator_style: SeparatorStyle) -> Self {
+    self.separator_style = separator_style;
+    self
+  }
+
+  pub fn with_no_percent_sign(mut self, no_percent_sign: bool) -> Self {
+    self.no_percent_sign = no_percent_sign;
+    self
+  }
+}
+
 /// Badge styles as defined by `shields.io`.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub enum BadgeStyle {
   /// `flat` style.
+  #[default]
   Flat,
   /// `flat-square` style.
   FlatSquare,
@@ -54,12 +95,14 @@ impl From<&str> for BadgeStyle {
   }
 }
 
+#[derive(Debug, Default)]
 pub enum SeparatorStyle {
   /// Single space.
   Space,
   /// Vertical bar.
   Bar,
   /// Vertical bar with space before and after.
+  #[default]
   SpacedBar,
 }
 
@@ -97,8 +140,6 @@ pub struct CoverageReport {
   color_moderate: String,
   /// Color used for low code coverage.
   color_low: String,
-  /// Flag indicating if the percent sign should be visible.
-  show_percent_sign: bool,
 }
 
 impl CoverageReport {
@@ -115,7 +156,6 @@ impl CoverageReport {
       color_high: "21b577".to_string(),
       color_moderate: "f4b01b".to_string(),
       color_low: "f52020".to_string(),
-      show_percent_sign: true,
     }
   }
 
@@ -179,7 +219,7 @@ impl CoverageReport {
   }
 
   /// Returns a link of the `shields.io` badge reporting the coverage.
-  pub fn badge(&self, badge_style: BadgeStyle, badge_label: String, separator_style: SeparatorStyle) -> String {
+  pub fn badge(&self, properties: BadgeProperties) -> String {
     let regions_perc = self.regions_percent.trunc();
     let functions_perc = self.functions_percent.trunc();
     let lines_perc = self.lines_percent.trunc();
@@ -199,17 +239,17 @@ impl CoverageReport {
     } else {
       &self.color_moderate
     };
-    let separator = self.separator(separator_style);
-    let prefix = format!("https://img.shields.io/badge/{}", badge_label);
-    let query_parameter = badge_style.query_parameter();
+    let separator = self.separator(properties.separator_style);
+    let prefix = format!("https://img.shields.io/badge/{}", properties.badge_label);
+    let query_parameter = properties.badge_style.query_parameter();
     let style = if query_parameter.is_empty() {
       "".to_string()
     } else {
       format!("?style={query_parameter}")
     };
-    let regions = self.label_value(regions_perc, self.regions_count);
-    let functions = self.label_value(functions_perc, self.functions_count);
-    let lines = self.label_value(lines_perc, self.lines_count);
+    let regions = self.label_value(regions_perc, self.regions_count, properties.no_percent_sign);
+    let functions = self.label_value(functions_perc, self.functions_count, properties.no_percent_sign);
+    let lines = self.label_value(lines_perc, self.lines_count, properties.no_percent_sign);
     format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
   }
 
@@ -223,9 +263,9 @@ impl CoverageReport {
   }
 
   /// Returns the formatted coverage value.
-  fn label_value(&self, value: f64, count: u64) -> String {
+  fn label_value(&self, value: f64, count: u64, no_percent_sign: bool) -> String {
     if count > 0 {
-      if self.show_percent_sign { format!("{value}{PERCENT}") } else { format!("{value}") }
+      if no_percent_sign { format!("{value}") } else { format!("{value}{PERCENT}") }
     } else {
       EM_DASH.to_string()
     }

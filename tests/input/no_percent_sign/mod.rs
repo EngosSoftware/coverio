@@ -55,13 +55,12 @@ fn _0002() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-r")
-    .arg("non-existing-separator")
+    .arg("-n")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+      r#"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
 
 "#
     ))
@@ -73,84 +72,12 @@ fn _0003() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-r")
-    .arg("spaced-bar")
+    .arg("--no-percent-sign")
     .write_stdin(INPUT)
     .assert()
     .success()
     .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0004() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("-r")
-    .arg("bar")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%E2%94%82100%25%E2%94%82100%25-21b577.svg
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0005() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("-r")
-    .arg("space")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0006() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("--separator")
-    .arg("space")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
-
-"#
-    ))
-    .stderr("");
-}
-
-#[test]
-fn _0007() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("--separator=space")
-    .write_stdin(INPUT)
-    .assert()
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
+      r#"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
 
 "#
     ))
