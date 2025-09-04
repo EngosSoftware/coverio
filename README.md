@@ -9,7 +9,7 @@
 [![MIT-license][mit-badge]][mit-license-url]
 [![Apache-2.0-license][apache-badge]][apache-license-url]
 [![contributor-covenant][cc-badge]][cc-url]
-[![made-by-human][mbh-badge]][mbh-url]
+[![made-by-human][made-by-human-badge]][made-by-human-url]
 
 [crates-badge]: https://img.shields.io/crates/v/coverio.svg
 [crates-url]: https://crates.io/crates/coverio
@@ -28,8 +28,8 @@
 [cov-url]: https://crates.io/crates/coverio
 [cc-badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
 [cc-url]: https://github.com/EngosSoftware/coverio/blob/main/CODE_OF_CONDUCT.md
-[mbh-badge]: https://img.shields.io/badge/Made_by-HUMAN-d35400.svg
-[mbh-url]: https://github.com/DariuszDepta
+[made-by-human-badge]: https://img.shields.io/badge/Made_by-HUMAN-d92653.svg
+[made-by-human-url]: https://github.com/DariuszDepta
 [repository-url]: https://github.com/EngosSoftware/coverio
 
 **Better code coverage reporting for Rust crates**
