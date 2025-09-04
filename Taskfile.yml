@@ -42,7 +42,7 @@ tasks:
     cmds:
       - cmd: cargo +stable build
       - cmd: cargo +stable llvm-cov clean
-      - cmd: cargo +stable llvm-cov --no-cfg-coverage --json --summary-only | ./target/debug/coverio -r space -q -t cov-badge-coverio
+      - cmd: cargo +stable llvm-cov --no-cfg-coverage --json --summary-only | ./target/debug/coverio --collapse --tag cov-badge-coverio
 
   doc:
     desc: Generates documentation

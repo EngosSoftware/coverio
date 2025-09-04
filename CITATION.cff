@@ -1,7 +1,6 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it using these metadata.
-title: coverio
-abstract: Better code coverage reporting for Rust crates
+title: coverio | Better code coverage reporting for Rust crates
 authors:
   - family-names: Depta
     given-names: Dariusz

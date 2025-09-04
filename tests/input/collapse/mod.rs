@@ -55,7 +55,7 @@ fn _0002() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("-q")
+    .arg("-c")
     .write_stdin(INPUT)
     .assert()
     .success()
@@ -72,7 +72,7 @@ fn _0003() {
   let tc = test_context!();
   tc.command()
     .current_dir(tc.current_dir())
-    .arg("--squash")
+    .arg("--collapse")
     .write_stdin(INPUT)
     .assert()
     .success()

@@ -67,7 +67,7 @@ fn main() -> Result<(), CoverioError> {
     .with_badge_label(cli::badge_label(&matches))
     .with_separator_style(cli::separator_style(&matches))
     .with_no_percent_sign(cli::no_percent_sign(&matches))
-    .with_squash(cli::squash(&matches));
+    .with_squash(cli::collapse(&matches));
   let content = match input_file {
     Some(file_name) => {
       if file_name == "-" {
