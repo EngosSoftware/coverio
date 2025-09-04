@@ -28,7 +28,7 @@
 [cov-url]: https://crates.io/crates/coverio
 [cc-badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
 [cc-url]: https://github.com/EngosSoftware/coverio/blob/main/CODE_OF_CONDUCT.md
-[made-by-human-badge]: https://img.shields.io/badge/Made_by-HUMAN-d92653.svg
+[made-by-human-badge]: https://img.shields.io/badge/Made_by-HUMAN-e6194d.svg
 [made-by-human-url]: https://github.com/DariuszDepta
 [repository-url]: https://github.com/EngosSoftware/coverio
 
