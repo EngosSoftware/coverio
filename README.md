@@ -26,9 +26,9 @@
 [build-badge-macos-arm64]: https://github.com/EngosSoftware/coverio/actions/workflows/build-macos-arm64.yml/badge.svg
 [cov-badge-coverio]: https://img.shields.io/badge/cov-100%25-21b577.svg
 [cov-url]: https://crates.io/crates/coverio
-[cc-badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+[cc-badge]: https://img.shields.io/badge/Contributor%20Covenant-2.1-blue.svg
 [cc-url]: https://github.com/EngosSoftware/coverio/blob/main/CODE_OF_CONDUCT.md
-[made-by-human-badge]: https://img.shields.io/badge/Made_by-HUMAN-e6194d.svg
+[made-by-human-badge]: https://img.shields.io/badge/Made_by-HUMAN-red.svg
 [made-by-human-url]: https://github.com/DariuszDepta
 [repository-url]: https://github.com/EngosSoftware/coverio
 
