@@ -15,13 +15,12 @@ exclude = [
     ".github/",
     ".gitignore",
     "NOTES_AT_FUTURE_ME.md",
-    "CODE_OF_CONDUCT.md",
-    "CITATION.cff"
+    "CODE_OF_CONDUCT.md"
 ]
 
 [dependencies]
-clap = { version = "4.5.47", features = ["cargo"] }
-serde_json = { version = "1.0.143", features = ["arbitrary_precision"] }
+clap = { version = "4.5.53", features = ["cargo"] }
+serde_json = { version = "1.0.145", features = ["arbitrary_precision"] }
 
 [dev-dependencies]
 assert_cmd = "2.0.17"
