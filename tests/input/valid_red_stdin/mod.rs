@@ -1,5 +1,3 @@
-use super::*;
-
 const INPUT: &str = r#"
 {
   "data": [
@@ -38,6 +36,5 @@ const EXPECTED: &str = r"
 
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command().current_dir(tc.current_dir()).write_stdin(INPUT).assert().success().stdout(EXPECTED).stderr("");
+  cli_assert::command!().stdin(INPUT).success().stdout(EXPECTED).stderr("").execute();
 }

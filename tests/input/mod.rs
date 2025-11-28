@@ -1,5 +1,3 @@
-use super::*;
-
 mod collapse;
 mod invalid_data;
 mod invalid_input_file;

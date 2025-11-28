@@ -1,5 +1,3 @@
-use super::*;
-
 const INPUT: &str = r#"
 {
   "data": [
@@ -36,123 +34,109 @@ const EXPECTED: &str = r"
 
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(INPUT)
-    .assert()
+  cli_assert::command!()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0002() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-r")
     .arg("non-existing-separator")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-r")
     .arg("spaced-bar")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0004() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-r")
     .arg("bar")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%E2%94%82100%25%E2%94%82100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0005() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-r")
     .arg("space")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0006() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("--separator")
     .arg("space")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0007() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("--separator=space")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }

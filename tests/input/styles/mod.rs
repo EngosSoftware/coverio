@@ -1,5 +1,3 @@
-use super::*;
-
 const INPUT: &str = r#"
 {
   "data": [
@@ -36,141 +34,125 @@ const EXPECTED: &str = r"
 
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(INPUT)
-    .assert()
+  cli_assert::command!()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0002() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("non-existing-style")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("flat")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0004() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("--style=flat-square")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}?style=flat-square
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0005() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("flat-square")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}?style=flat-square
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0006() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("plastic")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}?style=plastic
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0007() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("for-the-badge")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}?style=for-the-badge
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0008() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-s")
     .arg("social")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}?style=social
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }

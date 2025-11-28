@@ -1,30 +1,24 @@
-use super::*;
-
 const INPUT: &[u8] = &[0xff, 0xfe, 0xfd];
 
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(INPUT)
-    .assert()
+  cli_assert::command!()
+    .stdin(INPUT)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: stream did not contain valid UTF-8\n");
+    .stderr("Error: stream did not contain valid UTF-8\n")
+    .execute();
 }
 
 #[test]
 fn _0002() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: stream did not contain valid UTF-8\n");
+    .stderr("Error: stream did not contain valid UTF-8\n")
+    .execute();
 }

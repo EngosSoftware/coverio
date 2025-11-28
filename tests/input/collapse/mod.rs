@@ -1,5 +1,3 @@
-use super::*;
-
 const INPUT: &str = r#"
 {
   "data": [
@@ -36,50 +34,44 @@ const EXPECTED: &str = r"
 
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(INPUT)
-    .assert()
+  cli_assert::command!()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0002() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-c")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }
 
 #[test]
 fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("--collapse")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}100%25-21b577.svg
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
 }

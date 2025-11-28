@@ -73,3 +73,8 @@ tasks:
     desc: Runs all tests in debug mode
     cmds:
       - cmd: cargo test
+
+  testn:
+    desc: Runs all tests in debug mode using nextest
+    cmds:
+      - cmd: cargo nextest run

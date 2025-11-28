@@ -1,7 +1,3 @@
-use super::*;
-use assert_fs::prelude::{FileWriteStr, PathAssert};
-use std::fs;
-
 const INPUT: &str = r#"
 {
   "data": [
@@ -38,82 +34,69 @@ const EXPECTED: &str = r"
 
 #[test]
 fn _0001() {
-  let file = assert_fs::NamedTempFile::new("README.md").unwrap();
-  file.write_str("line 1\n[cov-badge]: nothing here\nline 3\n").unwrap();
-  let path = file.parent().unwrap();
-  let tc = test_context!();
-  tc.command()
-    .current_dir(path)
+  let file = cli_assert::TmpFile::new("README.md");
+  file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
+  cli_assert::command!()
+    .current_dir(file.dir())
     .arg("-t")
     .arg("cov-badge")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
   file.assert("line 1\n[cov-badge]: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg\nline 3\n");
-  file.close().unwrap();
 }
 
 #[test]
 fn _0002() {
-  let file = assert_fs::NamedTempFile::new("TEXT.md").unwrap();
-  file.write_str("line 1\n[cov-badge]: nothing here\nline 3\n").unwrap();
-  let path = file.parent().unwrap();
-  let tc = test_context!();
-  tc.command()
-    .current_dir(path)
+  let file = cli_assert::TmpFile::new("TEXT.md");
+  file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
+  cli_assert::command!()
+    .current_dir(file.dir())
     .arg("-t")
     .arg("cov-badge")
     .arg("-f")
     .arg("TEXT.md")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .success()
     .stdout(format!(
       r#"{EXPECTED}
 
 "#
     ))
-    .stderr("");
+    .stderr("")
+    .execute();
   file.assert("line 1\n[cov-badge]: https://img.shields.io/badge/cov-100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg\nline 3\n");
-  file.close().unwrap();
 }
 
 #[test]
 fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
+  cli_assert::command!()
     .arg("-t")
     .arg("cov-badge")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .code(1)
-    .stderr("Error: No such file or directory (os error 2)\n");
+    .stderr("Error: No such file or directory (os error 2)\n")
+    .execute();
 }
 
 #[test]
 fn _0004() {
-  let file = assert_fs::NamedTempFile::new("README.md").unwrap();
-  file.write_str("line 1\n[cov-badge]: nothing here\nline 3\n").unwrap();
-  let mut perms = fs::metadata(file.path()).unwrap().permissions();
-  perms.set_readonly(true);
-  fs::set_permissions(file.path(), perms).unwrap();
-  let path = file.parent().unwrap();
-  let tc = test_context!();
-  tc.command()
-    .current_dir(path)
+  let file = cli_assert::TmpFile::new("README.md");
+  file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
+  file.set_readonly(true);
+  cli_assert::command!()
+    .current_dir(file.dir())
     .arg("-t")
     .arg("cov-badge")
-    .write_stdin(INPUT)
-    .assert()
+    .stdin(INPUT)
     .code(1)
-    .stderr("Error: Permission denied (os error 13)\n");
+    .stderr("Error: Permission denied (os error 13)\n")
+    .execute();
   file.assert("line 1\n[cov-badge]: nothing here\nline 3\n");
-  file.close().unwrap();
 }

@@ -1,8 +1,5 @@
-use super::*;
-
 #[test]
 fn _0001() {
-  let tc = test_context!();
   let expected = r"
  ┌────────────────────┬──────────┐
  │      Coverage      │     %    │
@@ -15,11 +12,5 @@ fn _0001() {
  Badge link: https://img.shields.io/badge/cov-94%25%20%E2%94%82%2093%25%20%E2%94%82%2095%25-21b577.svg
 
 ";
-  tc.command()
-    .current_dir(tc.current_dir())
-    .arg("coverage.json")
-    .assert()
-    .success()
-    .stdout(expected)
-    .stderr("");
+  cli_assert::command!().arg("coverage.json").success().stdout(expected).stderr("").execute();
 }

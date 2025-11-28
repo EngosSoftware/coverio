@@ -1,235 +1,191 @@
-use super::*;
-
 #[test]
 fn _0001() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin("")
-    .assert()
+  cli_assert::command!()
+    .stdin("")
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: EOF while parsing a value at line 1 column 0\n");
+    .stderr("Error: EOF while parsing a value at line 1 column 0\n")
+    .execute();
 }
 
 #[test]
 fn _0002() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin("[]")
-    .assert()
-    .failure()
-    .code(1)
-    .stdout("")
-    .stderr("Error: expected object\n");
+  cli_assert::command!().stdin("[]").failure().code(1).stdout("").stderr("Error: expected object\n").execute();
 }
 
 #[test]
 fn _0003() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin("{}")
-    .assert()
+  cli_assert::command!()
+    .stdin("{}")
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected field 'data'\n");
+    .stderr("Error: expected field 'data'\n")
+    .execute();
 }
 
 #[test]
 fn _0004() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":{}}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":{}}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'data' array\n");
+    .stderr("Error: expected 'data' array\n")
+    .execute();
 }
 
 #[test]
 fn _0005() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[1,2]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[1,2]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected single element in 'data' array\n");
+    .stderr("Error: expected single element in 'data' array\n")
+    .execute();
 }
 
 #[test]
 fn _0006() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[1]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[1]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected single object in 'data' array\n");
+    .stderr("Error: expected single object in 'data' array\n")
+    .execute();
 }
 
 #[test]
 fn _0007() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected field 'totals' in 'data` object\n");
+    .stderr("Error: expected field 'totals' in 'data` object\n")
+    .execute();
 }
 
 #[test]
 fn _0008() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":[]}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":[]}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'totals' object\n");
+    .stderr("Error: expected 'totals' object\n")
+    .execute();
 }
 
 #[test]
 fn _0009() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'regions' object\n");
+    .stderr("Error: expected 'regions' object\n")
+    .execute();
 }
 
 #[test]
 fn _0010() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":[]}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":[]}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'regions' object\n");
+    .stderr("Error: expected 'regions' object\n")
+    .execute();
 }
 
 #[test]
 fn _0011() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'count' number\n");
+    .stderr("Error: expected 'count' number\n")
+    .execute();
 }
 
 #[test]
 fn _0012() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":"c"}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":"c"}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'count' number\n");
+    .stderr("Error: expected 'count' number\n")
+    .execute();
 }
 
 #[test]
 fn _0013() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":-20}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":-20}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: invalid 'count' number\n");
+    .stderr("Error: invalid 'count' number\n")
+    .execute();
 }
 
 #[test]
 fn _0014() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":20}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":20}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'percent' number\n");
+    .stderr("Error: expected 'percent' number\n")
+    .execute();
 }
 
 #[test]
 fn _0015() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":80,"percent":"u"}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":80,"percent":"u"}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'percent' number\n");
+    .stderr("Error: expected 'percent' number\n")
+    .execute();
 }
 
 #[test]
 fn _0016() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":1.7976931348623157E+309}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":1.7976931348623157E+309}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: invalid 'percent' number\n");
+    .stderr("Error: invalid 'percent' number\n")
+    .execute();
 }
 
 #[test]
 fn _0017() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":0.1}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":0.1}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'functions' object\n");
+    .stderr("Error: expected 'functions' object\n")
+    .execute();
 }
 
 #[test]
 fn _0018() {
-  let tc = test_context!();
-  tc.command()
-    .current_dir(tc.current_dir())
-    .write_stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":0.1},"functions":{"count":20,"percent":0.1}}}]}"#)
-    .assert()
+  cli_assert::command!()
+    .stdin(r#"{"data":[{"totals":{"regions":{"count":20,"percent":0.1},"functions":{"count":20,"percent":0.1}}}]}"#)
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'lines' object\n");
+    .stderr("Error: expected 'lines' object\n")
+    .execute();
 }
