@@ -1,6 +1,6 @@
 [package]
 name = "coverio"
-version = "0.0.8-dev"
+version = "0.0.8"
 authors = ["Dariusz Depta <depta@engos.de>"]
 description = "Better code coverage reporting for Rust crates"
 documentation = "https://docs.rs/coverio"
@@ -23,4 +23,4 @@ clap = { version = "4.5.53", features = ["cargo"] }
 serde_json = { version = "1.0.145", features = ["arbitrary_precision"] }
 
 [dev-dependencies]
-cli-assert = { path = "../cli-assert" }
+cli-assert = "0.1.8"

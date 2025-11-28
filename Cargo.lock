@@ -93,7 +93,9 @@ checksum = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
 
 [[package]]
 name = "cli-assert"
-version = "0.1.7"
+version = "0.1.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "45d4694b3967e675671a9327a54d7e034786574fbe025a72be1d8a8cd6bf24ee"
 dependencies = [
  "tempfile",
 ]
@@ -106,7 +108,7 @@ checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 
 [[package]]
 name = "coverio"
-version = "0.0.8-dev"
+version = "0.0.8"
 dependencies = [
  "clap",
  "cli-assert",
