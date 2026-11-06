@@ -76,12 +76,16 @@ fn _0002() {
 
 #[test]
 fn _0003() {
+    #[cfg(not(target_os = "windows"))]
+    let expected_stderr = "Error: No such file or directory (os error 2)\n";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = "Error: The system cannot find the file specified. (os error 2)\n";
     cli_assert::command!()
         .arg("-t")
         .arg("cov-badge")
         .stdin(INPUT)
         .code(1)
-        .stderr("Error: No such file or directory (os error 2)\n")
+        .stderr(expected_stderr)
         .execute();
 }
 
@@ -90,13 +94,17 @@ fn _0004() {
     let file = cli_assert::TempFile::new("README.md");
     file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
     file.set_readonly(true);
+    #[cfg(not(target_os = "windows"))]
+    let expected_stderr = "Error: Permission denied (os error 13)\n";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = "Error: Access is denied. (os error 5)\n";
     cli_assert::command!()
         .current_dir(file.dir())
         .arg("-t")
         .arg("cov-badge")
         .stdin(INPUT)
         .code(1)
-        .stderr("Error: Permission denied (os error 13)\n")
+        .stderr(expected_stderr)
         .execute();
     file.assert("line 1\n[cov-badge]: nothing here\nline 3\n");
 }
