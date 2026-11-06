@@ -1,0 +1,70 @@
+const INPUT: &str = r#"
+{
+  "data": [
+    {
+      "totals": {
+        "functions": {
+          "count": 10,
+          "percent": 80.1
+        },
+        "lines": {
+          "count": 10,
+          "percent": 80.1
+        },
+        "regions": {
+          "count": 10,
+          "percent": 80.1
+        }
+      }
+    }
+  ]
+}
+"#;
+
+const EXPECTED: &str = r"
+ ┌────────────────────┬──────────┐
+ │      Coverage      │     %    │
+ ├────────────────────┼──────────┤
+ │ Covered regions    │  80.1000 │
+ │ Executed functions │  80.1000 │
+ │ Covered lines      │  80.1000 │
+ └────────────────────┴──────────┘
+
+ Badge link: https://img.shields.io/badge/cov-80%25%20%E2%94%82%2080%25%20%E2%94%82%2080%25-21b577.svg
+
+";
+
+#[test]
+fn _0001() {
+    cli_assert::command!()
+        .arg("-l")
+        .arg("cov")
+        .stdin(INPUT)
+        .success()
+        .stdout(EXPECTED)
+        .stderr("")
+        .execute();
+}
+
+#[test]
+fn _0002() {
+    cli_assert::command!()
+        .arg("--label")
+        .arg("cov")
+        .stdin(INPUT)
+        .success()
+        .stdout(EXPECTED)
+        .stderr("")
+        .execute();
+}
+
+#[test]
+fn _0003() {
+    cli_assert::command!()
+        .arg("--label=cov")
+        .stdin(INPUT)
+        .success()
+        .stdout(EXPECTED)
+        .stderr("")
+        .execute();
+}

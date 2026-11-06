@@ -30,11 +30,16 @@ const EXPECTED: &str = r"
  │ Covered lines      │   0.0000 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/cov-33%25%20%E2%94%82%20%E2%80%94%20%E2%94%82%20%E2%80%94-f52020.svg
+ Badge link: https://img.shields.io/badge/coverage-33%25%20%E2%94%82%20%E2%80%94%20%E2%94%82%20%E2%80%94-f52020.svg
 
 ";
 
 #[test]
 fn _0001() {
-  cli_assert::command!().stdin(INPUT).success().stdout(EXPECTED).stderr("").execute();
+    cli_assert::command!()
+        .stdin(INPUT)
+        .success()
+        .stdout(EXPECTED)
+        .stderr("")
+        .execute();
 }
