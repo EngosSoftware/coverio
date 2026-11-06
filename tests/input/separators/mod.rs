@@ -30,113 +30,113 @@ const EXPECTED: &str = r"
  │ Covered lines      │ 100.0000 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/cov-";
+ Badge link: https://img.shields.io/badge/coverage-";
 
 #[test]
 fn _0001() {
-  cli_assert::command!()
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+    cli_assert::command!()
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0002() {
-  cli_assert::command!()
-    .arg("-r")
-    .arg("non-existing-separator")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+    cli_assert::command!()
+        .arg("-r")
+        .arg("non-existing-separator")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0003() {
-  cli_assert::command!()
-    .arg("-r")
-    .arg("spaced-bar")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+    cli_assert::command!()
+        .arg("-r")
+        .arg("spaced-bar")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0004() {
-  cli_assert::command!()
-    .arg("-r")
-    .arg("bar")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%E2%94%82100%25%E2%94%82100%25-21b577.svg
+    cli_assert::command!()
+        .arg("-r")
+        .arg("bar")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%E2%94%82100%25%E2%94%82100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0005() {
-  cli_assert::command!()
-    .arg("-r")
-    .arg("space")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
+    cli_assert::command!()
+        .arg("-r")
+        .arg("space")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0006() {
-  cli_assert::command!()
-    .arg("--separator")
-    .arg("space")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
+    cli_assert::command!()
+        .arg("--separator")
+        .arg("space")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0007() {
-  cli_assert::command!()
-    .arg("--separator=space")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
+    cli_assert::command!()
+        .arg("--separator=space")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20100%25%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }

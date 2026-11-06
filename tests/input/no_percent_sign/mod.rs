@@ -30,48 +30,48 @@ const EXPECTED: &str = r"
  │ Covered lines      │ 100.0000 │
  └────────────────────┴──────────┘
 
- Badge link: https://img.shields.io/badge/cov-";
+ Badge link: https://img.shields.io/badge/coverage-";
 
 #[test]
 fn _0001() {
-  cli_assert::command!()
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+    cli_assert::command!()
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0002() {
-  cli_assert::command!()
-    .arg("-n")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
+    cli_assert::command!()
+        .arg("-n")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }
 
 #[test]
 fn _0003() {
-  cli_assert::command!()
-    .arg("--no-percent-sign")
-    .stdin(INPUT)
-    .success()
-    .stdout(format!(
-      r#"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
+    cli_assert::command!()
+        .arg("--no-percent-sign")
+        .stdin(INPUT)
+        .success()
+        .stdout(format!(
+            r"{EXPECTED}100%20%E2%94%82%20100%20%E2%94%82%20100-21b577.svg
 
-"#
-    ))
-    .stderr("")
-    .execute();
+"
+        ))
+        .stderr("")
+        .execute();
 }

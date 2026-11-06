@@ -1,26 +1,29 @@
 [package]
 name = "coverio"
-version = "0.0.9-dev"
+version = "0.1.0"
 authors = ["Dariusz Depta <depta@engos.de>"]
-description = "Better code coverage reporting for Rust crates"
+description = "Better coverage badges for crates"
 documentation = "https://docs.rs/coverio"
 repository = "https://github.com/EngosSoftware/coverio.git"
-keywords = ["code", "coverage", "reporting", "badge"]
+keywords = ["coverage", "badge"]
+homepage = "https://EngossSoftware.github.io/coverio/"
 categories = ["development-tools"]
 license = "MIT OR Apache-2.0"
+rust-version = "1.88.0"
 edition = "2024"
-exclude = [
-    "rustfmt.toml",
-    "Taskfile.yml",
-    ".github/",
-    ".gitignore",
-    "NOTES_AT_FUTURE_ME.md",
-    "CODE_OF_CONDUCT.md"
+include = [
+    "src/**",
+    "tests/**",
+    "docs/*.rs.md",
+    "Cargo.lock",
+    "Cargo.toml",
+    "LICENSE*",
+    "README.md"
 ]
 
 [dependencies]
-clap = { version = "4.5.53", features = ["cargo"] }
-serde_json = { version = "1.0.145", features = ["arbitrary_precision"] }
+clap = { version = "4.6.7", features = ["cargo"] }
+serde_json = { version = "1.0.154", features = ["arbitrary_precision"] }
 
 [dev-dependencies]
-cli-assert = "0.1.8"
+cli-assert = "0.1.13"

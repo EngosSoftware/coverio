@@ -1,0 +1,5 @@
+[book]
+title = "coverio"
+authors = ["Dariusz Depta"]
+description = "Better coverage badges for crates"
+language = "en"

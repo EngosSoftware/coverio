@@ -9,6 +9,7 @@ mod separators;
 mod styles;
 mod valid_green_stdin;
 mod valid_input_file;
+mod valid_label;
 mod valid_red_stdin;
 mod valid_stdin;
 mod valid_yellow_stdin;
