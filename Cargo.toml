@@ -14,7 +14,7 @@ edition = "2024"
 include = [
     "src/**",
     "tests/**",
-    "docs/*.rs.md",
+    "docs/**/*.rs.md",
     "Cargo.lock",
     "Cargo.toml",
     "LICENSE*",
