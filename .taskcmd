@@ -1,4 +1,5 @@
-.note To use these task definitions, run:
+.note These task definitions require TaskCommander.
+      Install it using cargo:
       `cargo install task-commander`
 
 .vars
@@ -8,6 +9,7 @@
 
   .all
     .task clean
+    .task fmt
     .task build
     .task clippy
     .task pedantic
@@ -39,7 +41,7 @@
     .cmd cargo {{RUST_TOOLCHAIN}} llvm-cov --no-cfg-coverage --html
 
   .cov-html-open
-    .desc Generates the code coverage report in HTML format and opens in browser
+    .desc Generates the code coverage report in HTML and opens in browser
     .cmd cargo {{RUST_TOOLCHAIN}} llvm-cov clean
     .cmd cargo {{RUST_TOOLCHAIN}} llvm-cov --no-cfg-coverage --html --open
 
@@ -81,7 +83,7 @@
 
   .pedantic
     .desc Runs pedantic linter
-    .cmd cargo {{RUST_TOOLCHAIN}} clippy --all-targets -- -D warnings -W clippy::pedantic -W clippy::nursery
+    .cmd cargo {{RUST_TOOLCHAIN}} clippy --all-targets -- -D warnings -W clippy::pedantic -W clippy::nursery -W clippy::cargo
 
   .readme
     .desc Recreates README file
