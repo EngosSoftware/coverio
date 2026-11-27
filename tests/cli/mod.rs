@@ -19,11 +19,11 @@ Arguments:
   [FILE]  Coverage summary file in JSON format or '-'
 
 Options:
-  -s, --style <STYLE>          Badge style [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
+  -S, --style <STYLE>          Badge style [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
   -l, --label <LABEL>          Badge label [default: coverage]
-  -r, --separator <SEPARATOR>  Badge label [default: spaced-bar] [possible values: space, bar, spaced-bar]
+  -r, --separator <SEPARATOR>  Values separator [default: spaced-bar] [possible values: space, bar, spaced-bar]
   -C, --collapse <COLLAPSE>    Collapse to a single value [default: equal] [possible values: never, equal, regions, functions, lines]
-  -n, --no-percent-sign        Hide percent sign in values
+  -p, --hide-percent           Hide percent sign in values
   -t, --tag <TAG>              Markdown tag to be updated
   -f, --file <FILE>            Markdown file to be updated
   -V, --version                Print version
@@ -51,15 +51,15 @@ Arguments:
             cargo llvm-cov --json --summary-only
 
 Options:
-  -s, --style <STYLE>          Badge style
+  -S, --style <STYLE>          Badge style
                                  [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
   -l, --label <LABEL>          Badge label
                                  [default: coverage]
-  -r, --separator <SEPARATOR>  Badge label
+  -r, --separator <SEPARATOR>  Values separator
                                  [default: spaced-bar] [possible values: space, bar, spaced-bar]
   -C, --collapse <COLLAPSE>    Collapse to a single value
                                  [default: equal] [possible values: never, equal, regions, functions, lines]
-  -n, --no-percent-sign        Hide percent sign in values
+  -p, --hide-percent           Hide percent sign in values
   -t, --tag <TAG>              Markdown tag to be updated
   -f, --file <FILE>            Markdown file to be updated
   -V, --version

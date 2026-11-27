@@ -6,7 +6,6 @@ const SPACE: &str = "%20";
 
 /// Encoded Unicode character `%` (U+0025) Percent Sign
 const PERCENT: &str = "%25";
-//const PERCENT: &str = "%D9%AA";
 
 /// Encoded Unicode character `│` (U+2502) Box Drawings Light Vertical
 const BOX_DRAWINGS_LIGHT_VERTICAL: &str = "%E2%94%82";
@@ -20,7 +19,7 @@ pub struct BadgeProperties {
     badge_style: BadgeStyle,
     badge_label: String,
     separator: Separator,
-    no_percent_sign: bool,
+    hide_percent: bool,
     collapse: Collapse,
 }
 
@@ -30,14 +29,14 @@ impl BadgeProperties {
         badge_style: BadgeStyle,
         badge_label: String,
         separator: Separator,
-        no_percent_sign: bool,
+        hide_percent: bool,
         collapse: Collapse,
     ) -> Self {
         Self {
             badge_style,
             badge_label,
             separator,
-            no_percent_sign,
+            hide_percent,
             collapse,
         }
     }
@@ -250,9 +249,9 @@ impl CoverageReport {
         } else {
             format!("?style={query_parameter}")
         };
-        let r = label_value(regions, self.regions_count, properties.no_percent_sign);
-        let f = label_value(functions, self.functions_count, properties.no_percent_sign);
-        let l = label_value(lines, self.lines_count, properties.no_percent_sign);
+        let r = label_value(regions, self.regions_count, properties.hide_percent);
+        let f = label_value(functions, self.functions_count, properties.hide_percent);
+        let l = label_value(lines, self.lines_count, properties.hide_percent);
         match properties.collapse {
             Collapse::Equal if equal => format!("{label}-{l}-{color}.svg{style}"),
             Collapse::Functions => format!("{label}-{f}-{color}.svg{style}"),
@@ -292,9 +291,9 @@ fn separator(separator_style: &Separator) -> String {
 }
 
 /// Returns the formatted coverage value.
-fn label_value(value: f64, count: u64, no_percent_sign: bool) -> String {
+fn label_value(value: f64, count: u64, hide_percent: bool) -> String {
     if count > 0 {
-        if no_percent_sign {
+        if hide_percent {
             format!("{value}")
         } else {
             format!("{value}{PERCENT}")

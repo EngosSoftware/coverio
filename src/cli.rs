@@ -10,26 +10,10 @@ const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-const HELP_FILE: &str = "Coverage summary file in JSON format or '-'";
-
 const LONG_HELP_FILE: &str = r"Coverage summary file in JSON format.
 With no FILE, or when FILE is -, read standard input.
 To generate a coverage summary file, use the following command:
   cargo llvm-cov --json --summary-only";
-
-const HELP_LABEL: &str = r"Badge label";
-
-const HELP_NO_PERCENT_SIGN: &str = "Hide percent sign in values";
-
-pub const HELP_MARKDOWN_TAG: &str = "Markdown tag to be updated";
-
-pub const HELP_MARKDOWN_FILE: &str = "Markdown file to be updated";
-
-const BADGE_STYLE_DEFAULT: &str = "flat";
-
-const BADGE_LABEL_DEFAULT: &str = "coverage";
-
-const SEPARATOR_DEFAULT: &str = "spaced-bar";
 
 /// Command-line action.
 pub enum CliAction {
@@ -60,40 +44,40 @@ pub enum CliAction {
 fn get_cli(app: String) -> Clar {
     Clar::new(app).description(DESCRIPTION).options_arguments(
         [
-            ClarOption::short("badge-style", 's')
+            ClarOption::short("badge-style", 'S')
                 .long_label("style")
                 .takes_value("STYLE")
-                .default_value(BADGE_STYLE_DEFAULT)
+                .default_value("flat")
                 .possible_values(["flat", "flat-square", "plastic", "for-the-badge", "social"])
                 .help("Badge style"),
             ClarOption::short("badge-label", 'l')
                 .long_label("label")
                 .takes_value("LABEL")
-                .default_value(BADGE_LABEL_DEFAULT)
-                .help(HELP_LABEL),
+                .default_value("coverage")
+                .help("Badge label"),
             ClarOption::short("separator", 'r')
                 .long_label("separator")
                 .takes_value("SEPARATOR")
-                .default_value(SEPARATOR_DEFAULT)
+                .default_value("spaced-bar")
                 .possible_values(["space", "bar", "spaced-bar"])
-                .help(HELP_LABEL),
+                .help("Values separator"),
             ClarOption::short("collapse", 'C')
                 .long_label("collapse")
                 .takes_value("COLLAPSE")
                 .default_value("equal")
                 .possible_values(["never", "equal", "regions", "functions", "lines"])
                 .help("Collapse to a single value"),
-            ClarOption::short("no-percent-sign", 'n')
-                .long_label("no-percent-sign")
-                .help(HELP_NO_PERCENT_SIGN),
+            ClarOption::short("hide-percent", 'p')
+                .long_label("hide-percent")
+                .help("Hide percent sign in values"),
             ClarOption::short("markdown-tag", 't')
                 .long_label("tag")
                 .takes_value("TAG")
-                .help(HELP_MARKDOWN_TAG),
+                .help("Markdown tag to be updated"),
             ClarOption::short("markdown-file", 'f')
                 .long_label("file")
                 .takes_value("FILE")
-                .help(HELP_MARKDOWN_FILE),
+                .help("Markdown file to be updated"),
             ClarOption::short("version", 'V')
                 .long_label("version")
                 .standalone()
@@ -105,7 +89,7 @@ fn get_cli(app: String) -> Clar {
         ],
         [ClarArgument::new("input-file")
             .caption("FILE")
-            .help(HELP_FILE)
+            .help("Coverage summary file in JSON format or '-'")
             .help_long(LONG_HELP_FILE)],
     )
 }
@@ -141,14 +125,9 @@ pub fn get_action(app: String, args: Vec<String>) -> CliAction {
                 .as_str()
                 .into();
             let collapse = matches.get_first_value("collapse").unwrap().as_str().into();
-            let no_percent_sign = matches.is_present("no-percent-sign");
-            let badge_properties = BadgeProperties::new(
-                badge_style,
-                badge_label,
-                separator,
-                no_percent_sign,
-                collapse,
-            );
+            let hide_percent = matches.is_present("hide-percent");
+            let badge_properties =
+                BadgeProperties::new(badge_style, badge_label, separator, hide_percent, collapse);
             let markdown_tag = matches.get_first_value("markdown-tag");
             let markdown_file = matches.get_first_value("markdown-file");
             CliAction::Run(input_file, badge_properties, markdown_tag, markdown_file)

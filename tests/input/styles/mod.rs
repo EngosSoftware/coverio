@@ -50,7 +50,7 @@ fn _0001() {
 #[test]
 fn _0002() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-S")
         .arg("non-existing-style")
         .stdin(INPUT)
         .failure()
@@ -72,7 +72,7 @@ Error: kuku
 fn _0003() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-s")
+        .arg("-S")
         .arg("flat")
         .stdin(INPUT)
         .success()
@@ -105,7 +105,7 @@ fn _0004() {
 fn _0005() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-s")
+        .arg("-S")
         .arg("flat-square")
         .stdin(INPUT)
         .success()
@@ -122,7 +122,7 @@ fn _0005() {
 fn _0006() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-s")
+        .arg("-S")
         .arg("plastic")
         .stdin(INPUT)
         .success()
@@ -139,7 +139,7 @@ fn _0006() {
 fn _0007() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-s")
+        .arg("-S")
         .arg("for-the-badge")
         .stdin(INPUT)
         .success()
@@ -156,7 +156,7 @@ fn _0007() {
 fn _0008() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-s")
+        .arg("-S")
         .arg("social")
         .stdin(INPUT)
         .success()

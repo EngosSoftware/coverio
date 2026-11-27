@@ -18,8 +18,6 @@
 
 # Better coverage badges for crates 
 
-⁒ ﹪
-
 ## Overview
 
 This crate consumes the code coverage summary produced by the following command:

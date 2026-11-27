@@ -49,7 +49,7 @@ fn _0001() {
 #[test]
 fn _0002() {
     cli_assert::command!()
-        .arg("-n")
+        .arg("-p")
         .stdin(INPUT)
         .success()
         .stdout(format!(
@@ -64,7 +64,7 @@ fn _0002() {
 #[test]
 fn _0003() {
     cli_assert::command!()
-        .arg("--no-percent-sign")
+        .arg("--hide-percent")
         .stdin(INPUT)
         .success()
         .stdout(format!(
