@@ -50,7 +50,7 @@ fn _0001() {
 #[test]
 fn _0002() {
     cli_assert::command!()
-        .arg("-r")
+        .arg("-s")
         .arg("non-existing-separator")
         .stdin(INPUT)
         .failure()
@@ -72,7 +72,7 @@ Error: kuku
 fn _0003() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-r")
+        .arg("-s")
         .arg("spaced-bar")
         .stdin(INPUT)
         .success()
@@ -89,7 +89,7 @@ fn _0003() {
 fn _0004() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-r")
+        .arg("-s")
         .arg("bar")
         .stdin(INPUT)
         .success()
@@ -106,7 +106,7 @@ fn _0004() {
 fn _0005() {
     cli_assert::command!()
         .arg("-C=never")
-        .arg("-r")
+        .arg("-s")
         .arg("space")
         .stdin(INPUT)
         .success()

@@ -55,7 +55,7 @@ fn get_cli(app: String) -> Clar {
                 .takes_value("LABEL")
                 .default_value("coverage")
                 .help("Badge label"),
-            ClarOption::short("separator", 'r')
+            ClarOption::short("separator", 's')
                 .long_label("separator")
                 .takes_value("SEPARATOR")
                 .default_value("spaced-bar")

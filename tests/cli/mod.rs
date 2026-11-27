@@ -21,7 +21,7 @@ Arguments:
 Options:
   -S, --style <STYLE>          Badge style [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
   -l, --label <LABEL>          Badge label [default: coverage]
-  -r, --separator <SEPARATOR>  Values separator [default: spaced-bar] [possible values: space, bar, spaced-bar]
+  -s, --separator <SEPARATOR>  Values separator [default: spaced-bar] [possible values: space, bar, spaced-bar]
   -C, --collapse <COLLAPSE>    Collapse to a single value [default: equal] [possible values: never, equal, regions, functions, lines]
   -p, --hide-percent           Hide percent sign in values
   -t, --tag <TAG>              Markdown tag to be updated
@@ -55,7 +55,7 @@ Options:
                                  [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
   -l, --label <LABEL>          Badge label
                                  [default: coverage]
-  -r, --separator <SEPARATOR>  Values separator
+  -s, --separator <SEPARATOR>  Values separator
                                  [default: spaced-bar] [possible values: space, bar, spaced-bar]
   -C, --collapse <COLLAPSE>    Collapse to a single value
                                  [default: equal] [possible values: never, equal, regions, functions, lines]
