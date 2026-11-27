@@ -1,6 +1,6 @@
 #[test]
 fn _0001() {
-    let expected_stdout = "coverio v0.1.1\n";
+    let expected_stdout = "coverio v0.2.0\n";
     cli_assert::command!()
         .arg("-V")
         .success()
