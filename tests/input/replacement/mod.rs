@@ -79,9 +79,9 @@ fn _0002() {
 #[test]
 fn _0003() {
     #[cfg(not(target_os = "windows"))]
-    let expected_stderr = "Error: No such file or directory (os error 2)\n";
+    let expected_stderr = "error: No such file or directory (os error 2)\n";
     #[cfg(target_os = "windows")]
-    let expected_stderr = "Error: The system cannot find the file specified. (os error 2)\n";
+    let expected_stderr = "error: The system cannot find the file specified. (os error 2)\n";
     cli_assert::command!()
         .arg("-t")
         .arg("cov-badge")
@@ -97,9 +97,9 @@ fn _0004() {
     file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
     file.set_readonly(true);
     #[cfg(not(target_os = "windows"))]
-    let expected_stderr = "Error: Permission denied (os error 13)\n";
+    let expected_stderr = "error: Permission denied (os error 13)\n";
     #[cfg(target_os = "windows")]
-    let expected_stderr = "Error: Access is denied. (os error 5)\n";
+    let expected_stderr = "error: Access is denied. (os error 5)\n";
     cli_assert::command!()
         .current_dir(file.dir())
         .arg("-t")

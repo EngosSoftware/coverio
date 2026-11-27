@@ -55,7 +55,6 @@ fn _0002() {
 Usage: coverio [OPTIONS]  [ARGS]
 
 For more information, try '-h' or '--help'
-Error: kuku
 ";
     #[cfg(target_os = "windows")]
     let expected_stderr = super::win(expected_stderr);
@@ -64,6 +63,7 @@ Error: kuku
         .arg("non-existing-separator")
         .stdin(INPUT)
         .failure()
+        .code(1)
         .stdout("")
         .stderr(expected_stderr)
         .execute();

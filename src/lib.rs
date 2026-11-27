@@ -14,6 +14,7 @@ use antex::ColorMode;
 use clars::{get_app_and_args, get_more_info_hint};
 use report::{BadgeProperties, CoverageReport};
 use std::io::Read;
+use std::process::ExitCode;
 use std::{fs, io};
 
 fn get_content_from_file(file_name: String) -> Result<String> {
@@ -83,7 +84,7 @@ fn update_markdown_file(
 /// # Errors
 ///
 /// //TODO Add errors description
-pub fn run() -> Result<()> {
+pub fn run() -> Result<ExitCode> {
     let (app, args) = get_app_and_args();
     match get_action(app, args) {
         CliAction::Run(input_file, badge_properties, markdown_tag, markdown_file) => {
@@ -112,8 +113,8 @@ pub fn run() -> Result<()> {
                 "{}",
                 get_more_info_hint(ColorMode::default(), &["-h", "--help"])
             );
-            return Err(CoverioError::new("kuku"));
+            return Ok(ExitCode::FAILURE);
         }
     }
-    Ok(())
+    Ok(ExitCode::SUCCESS)
 }

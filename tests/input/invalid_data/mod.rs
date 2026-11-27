@@ -5,7 +5,7 @@ fn _0001() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: EOF while parsing a value at line 1 column 0\n")
+        .stderr("error: EOF while parsing a value at line 1 column 0\n")
         .execute();
 }
 
@@ -16,7 +16,7 @@ fn _0002() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected object\n")
+        .stderr("error: expected object\n")
         .execute();
 }
 
@@ -27,7 +27,7 @@ fn _0003() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected field 'data'\n")
+        .stderr("error: expected field 'data'\n")
         .execute();
 }
 
@@ -38,7 +38,7 @@ fn _0004() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'data' array\n")
+        .stderr("error: expected 'data' array\n")
         .execute();
 }
 
@@ -49,7 +49,7 @@ fn _0005() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected single element in 'data' array\n")
+        .stderr("error: expected single element in 'data' array\n")
         .execute();
 }
 
@@ -60,7 +60,7 @@ fn _0006() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected single object in 'data' array\n")
+        .stderr("error: expected single object in 'data' array\n")
         .execute();
 }
 
@@ -71,7 +71,7 @@ fn _0007() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected field 'totals' in 'data` object\n")
+        .stderr("error: expected field 'totals' in 'data` object\n")
         .execute();
 }
 
@@ -82,7 +82,7 @@ fn _0008() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'totals' object\n")
+        .stderr("error: expected 'totals' object\n")
         .execute();
 }
 
@@ -93,7 +93,7 @@ fn _0009() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'regions' object\n")
+        .stderr("error: expected 'regions' object\n")
         .execute();
 }
 
@@ -104,7 +104,7 @@ fn _0010() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'regions' object\n")
+        .stderr("error: expected 'regions' object\n")
         .execute();
 }
 
@@ -115,7 +115,7 @@ fn _0011() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'count' number\n")
+        .stderr("error: expected 'count' number\n")
         .execute();
 }
 
@@ -126,7 +126,7 @@ fn _0012() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'count' number\n")
+        .stderr("error: expected 'count' number\n")
         .execute();
 }
 
@@ -137,7 +137,7 @@ fn _0013() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: invalid 'count' number\n")
+        .stderr("error: invalid 'count' number\n")
         .execute();
 }
 
@@ -148,7 +148,7 @@ fn _0014() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'percent' number\n")
+        .stderr("error: expected 'percent' number\n")
         .execute();
 }
 
@@ -159,7 +159,7 @@ fn _0015() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'percent' number\n")
+        .stderr("error: expected 'percent' number\n")
         .execute();
 }
 
@@ -172,7 +172,7 @@ fn _0016() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: invalid 'percent' number\n")
+        .stderr("error: invalid 'percent' number\n")
         .execute();
 }
 
@@ -183,7 +183,7 @@ fn _0017() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: expected 'functions' object\n")
+        .stderr("error: expected 'functions' object\n")
         .execute();
 }
 
@@ -194,6 +194,6 @@ fn _0018() {
     .failure()
     .code(1)
     .stdout("")
-    .stderr("Error: expected 'lines' object\n")
+    .stderr("error: expected 'lines' object\n")
     .execute();
 }

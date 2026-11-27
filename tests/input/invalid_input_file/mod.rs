@@ -5,6 +5,6 @@ fn _0001() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: EOF while parsing an object at line 2 column 0\n")
+        .stderr("error: EOF while parsing an object at line 2 column 0\n")
         .execute();
 }
