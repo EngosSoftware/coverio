@@ -49,22 +49,23 @@ fn _0001() {
 
 #[test]
 fn _0002() {
-    cli_assert::command!()
-        .arg("-s")
-        .arg("non-existing-separator")
-        .stdin(INPUT)
-        .failure()
-        .stdout("")
-        .stderr(
-            r"error: invalid value 'non-existing-separator' for '--separator <SEPARATOR>'
+    let expected_stderr = r"error: invalid value 'non-existing-separator' for '--separator <SEPARATOR>'
   [possible values: space, bar, spaced-bar]
 
 Usage: coverio [OPTIONS]  [ARGS]
 
 For more information, try '-h' or '--help'
 Error: kuku
-",
-        )
+";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = super::win(expected_stderr);
+    cli_assert::command!()
+        .arg("-s")
+        .arg("non-existing-separator")
+        .stdin(INPUT)
+        .failure()
+        .stdout("")
+        .stderr(expected_stderr)
         .execute();
 }
 
