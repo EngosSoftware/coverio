@@ -38,6 +38,7 @@ fn _0001() {
     file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
     cli_assert::command!()
         .current_dir(file.dir())
+        .arg("-C=never")
         .arg("-t")
         .arg("cov-badge")
         .stdin(INPUT)
@@ -58,6 +59,7 @@ fn _0002() {
     file.write("line 1\n[cov-badge]: nothing here\nline 3\n");
     cli_assert::command!()
         .current_dir(file.dir())
+        .arg("-C=never")
         .arg("-t")
         .arg("cov-badge")
         .arg("-f")

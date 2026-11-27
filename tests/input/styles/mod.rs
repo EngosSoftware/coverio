@@ -35,6 +35,7 @@ const EXPECTED: &str = r"
 #[test]
 fn _0001() {
     cli_assert::command!()
+        .arg("-C=never")
         .stdin(INPUT)
         .success()
         .stdout(format!(
@@ -70,6 +71,7 @@ Error: kuku
 #[test]
 fn _0003() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-s")
         .arg("flat")
         .stdin(INPUT)
@@ -86,6 +88,7 @@ fn _0003() {
 #[test]
 fn _0004() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--style=flat-square")
         .stdin(INPUT)
         .success()
@@ -101,6 +104,7 @@ fn _0004() {
 #[test]
 fn _0005() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-s")
         .arg("flat-square")
         .stdin(INPUT)
@@ -117,6 +121,7 @@ fn _0005() {
 #[test]
 fn _0006() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-s")
         .arg("plastic")
         .stdin(INPUT)
@@ -133,6 +138,7 @@ fn _0006() {
 #[test]
 fn _0007() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-s")
         .arg("for-the-badge")
         .stdin(INPUT)
@@ -149,6 +155,7 @@ fn _0007() {
 #[test]
 fn _0008() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-s")
         .arg("social")
         .stdin(INPUT)

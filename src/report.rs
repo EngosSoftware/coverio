@@ -21,7 +21,7 @@ pub struct BadgeProperties {
     badge_label: String,
     separator: Separator,
     no_percent_sign: bool,
-    collapse: bool,
+    collapse: Collapse,
 }
 
 impl BadgeProperties {
@@ -31,7 +31,7 @@ impl BadgeProperties {
         badge_label: String,
         separator: Separator,
         no_percent_sign: bool,
-        collapse: bool,
+        collapse: Collapse,
     ) -> Self {
         Self {
             badge_style,
@@ -84,6 +84,7 @@ impl From<&str> for BadgeStyle {
     }
 }
 
+/// Values separator.
 #[derive(Debug, Default)]
 pub enum Separator {
     /// Vertical bar with space before and after.
@@ -101,6 +102,34 @@ impl From<&str> for Separator {
             "space" => Self::Space,
             "bar" => Self::Bar,
             _ => Self::SpacedBar,
+        }
+    }
+}
+
+/// Collapse mode.
+#[derive(Debug, Default)]
+pub enum Collapse {
+    /// Collapses to one value when all are equal.
+    #[default]
+    Equal,
+    /// Always displays all values.
+    Never,
+    /// Displays only coverage for regions.
+    Regions,
+    /// Displays only coverage for function.
+    Functions,
+    /// Displays only coverage for lines.
+    Lines,
+}
+
+impl From<&str> for Collapse {
+    fn from(value: &str) -> Self {
+        match value {
+            "never" => Self::Never,
+            "regions" => Self::Regions,
+            "functions" => Self::Functions,
+            "lines" => Self::Lines,
+            _ => Self::Equal,
         }
     }
 }
@@ -228,10 +257,24 @@ impl CoverageReport {
             properties.no_percent_sign,
         );
         let lines = label_value(lines_perc, self.lines_count, properties.no_percent_sign);
-        if properties.collapse && equal_perc {
-            format!("{prefix}-{lines}-{color}.svg{style}")
-        } else {
-            format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
+        match properties.collapse {
+            Collapse::Equal if equal_perc => {
+                format!("{prefix}-{lines}-{color}.svg{style}")
+            }
+            Collapse::Functions => {
+                format!("{prefix}-{functions}-{color}.svg{style}")
+            }
+            Collapse::Regions => {
+                format!("{prefix}-{regions}-{color}.svg{style}")
+            }
+            Collapse::Lines => {
+                format!("{prefix}-{lines}-{color}.svg{style}")
+            }
+            _ => {
+                format!(
+                    "{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}"
+                )
+            }
         }
     }
 }

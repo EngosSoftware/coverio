@@ -35,6 +35,7 @@ const EXPECTED: &str = r"
 #[test]
 fn _0001() {
     cli_assert::command!()
+        .arg("-C=never")
         .stdin(INPUT)
         .success()
         .stdout(format!(
@@ -70,6 +71,7 @@ Error: kuku
 #[test]
 fn _0003() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-r")
         .arg("spaced-bar")
         .stdin(INPUT)
@@ -86,6 +88,7 @@ fn _0003() {
 #[test]
 fn _0004() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-r")
         .arg("bar")
         .stdin(INPUT)
@@ -102,6 +105,7 @@ fn _0004() {
 #[test]
 fn _0005() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("-r")
         .arg("space")
         .stdin(INPUT)
@@ -118,6 +122,7 @@ fn _0005() {
 #[test]
 fn _0006() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--separator")
         .arg("space")
         .stdin(INPUT)
@@ -134,6 +139,7 @@ fn _0006() {
 #[test]
 fn _0007() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--separator=space")
         .stdin(INPUT)
         .success()

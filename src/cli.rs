@@ -1,6 +1,6 @@
 //! Command-line utilities
 
-use crate::report::{BadgeProperties, BadgeStyle, Separator};
+use crate::report::BadgeProperties;
 use antex::{StyledText, Text};
 use clars::{Clar, ClarArgument, ClarOption};
 
@@ -17,11 +17,7 @@ With no FILE, or when FILE is -, read standard input.
 To generate a coverage summary file, use the following command:
   cargo llvm-cov --json --summary-only";
 
-const HELP_STYLE: &str = "Badge style";
-
 const HELP_LABEL: &str = r"Badge label";
-
-const HELP_COLLAPSE: &str = "Collapse to a single value if all are equal";
 
 const HELP_NO_PERCENT_SIGN: &str = "Hide percent sign in values";
 
@@ -69,7 +65,7 @@ fn get_cli(app: String) -> Clar {
                 .takes_value("STYLE")
                 .default_value(BADGE_STYLE_DEFAULT)
                 .possible_values(["flat", "flat-square", "plastic", "for-the-badge", "social"])
-                .help(HELP_STYLE),
+                .help("Badge style"),
             ClarOption::short("badge-label", 'l')
                 .long_label("label")
                 .takes_value("LABEL")
@@ -83,7 +79,10 @@ fn get_cli(app: String) -> Clar {
                 .help(HELP_LABEL),
             ClarOption::short("collapse", 'C')
                 .long_label("collapse")
-                .help(HELP_COLLAPSE),
+                .takes_value("COLLAPSE")
+                .default_value("equal")
+                .possible_values(["never", "equal", "regions", "functions", "lines"])
+                .help("Collapse to a single value"),
             ClarOption::short("no-percent-sign", 'n')
                 .long_label("no-percent-sign")
                 .help(HELP_NO_PERCENT_SIGN),
@@ -130,18 +129,18 @@ pub fn get_action(app: String, args: Vec<String>) -> CliAction {
                 return CliAction::ShowVersion(version);
             }
             let input_file = matches.get_first_value("input-file");
-            let badge_style: BadgeStyle = matches
+            let badge_style = matches
                 .get_first_value("badge-style")
                 .unwrap()
                 .as_str()
                 .into();
             let badge_label = matches.get_first_value("badge-label").unwrap();
-            let separator: Separator = matches
+            let separator = matches
                 .get_first_value("separator")
                 .unwrap()
                 .as_str()
                 .into();
-            let collapse = matches.is_present("collapse");
+            let collapse = matches.get_first_value("collapse").unwrap().as_str().into();
             let no_percent_sign = matches.is_present("no-percent-sign");
             let badge_properties = BadgeProperties::new(
                 badge_style,
