@@ -49,22 +49,23 @@ fn _0001() {
 
 #[test]
 fn _0002() {
-    cli_assert::command!()
-        .arg("-S")
-        .arg("non-existing-style")
-        .stdin(INPUT)
-        .failure()
-        .stdout("")
-        .stderr(
-            r"error: invalid value 'non-existing-style' for '--style <STYLE>'
+    let expected_stderr = r"error: invalid value 'non-existing-style' for '--style <STYLE>'
   [possible values: flat, flat-square, plastic, for-the-badge, social]
 
 Usage: coverio [OPTIONS]  [ARGS]
 
 For more information, try '-h' or '--help'
 Error: kuku
-",
-        )
+";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = super::win(expected_stderr);
+    cli_assert::command!()
+        .arg("-S")
+        .arg("non-existing-style")
+        .stdin(INPUT)
+        .failure()
+        .stdout("")
+        .stderr(expected_stderr)
         .execute();
 }
 
