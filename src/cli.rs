@@ -81,7 +81,7 @@ fn get_cli(app: String) -> Clar {
                 .default_value(SEPARATOR_DEFAULT)
                 .possible_values(["space", "bar", "spaced-bar"])
                 .help(HELP_LABEL),
-            ClarOption::short("collapse", 'c')
+            ClarOption::short("collapse", 'C')
                 .long_label("collapse")
                 .help(HELP_COLLAPSE),
             ClarOption::short("no-percent-sign", 'n')

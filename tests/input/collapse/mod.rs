@@ -49,7 +49,7 @@ fn _0001() {
 #[test]
 fn _0002() {
     cli_assert::command!()
-        .arg("-c")
+        .arg("-C")
         .stdin(INPUT)
         .success()
         .stdout(format!(

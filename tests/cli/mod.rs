@@ -22,7 +22,7 @@ Options:
   -s, --style <STYLE>          Badge style [default: flat] [possible values: flat, flat-square, plastic, for-the-badge, social]
   -l, --label <LABEL>          Badge label [default: coverage]
   -r, --separator <SEPARATOR>  Badge label [default: spaced-bar] [possible values: space, bar, spaced-bar]
-  -c, --collapse               Collapse to a single value if all are equal
+  -C, --collapse               Collapse to a single value if all are equal
   -n, --no-percent-sign        Hide percent sign in values
   -t, --tag <TAG>              Markdown tag to be updated
   -f, --file <FILE>            Markdown file to be updated
@@ -57,7 +57,7 @@ Options:
                                  [default: coverage]
   -r, --separator <SEPARATOR>  Badge label
                                  [default: spaced-bar] [possible values: space, bar, spaced-bar]
-  -c, --collapse               Collapse to a single value if all are equal
+  -C, --collapse               Collapse to a single value if all are equal
   -n, --no-percent-sign        Hide percent sign in values
   -t, --tag <TAG>              Markdown tag to be updated
   -f, --file <FILE>            Markdown file to be updated
