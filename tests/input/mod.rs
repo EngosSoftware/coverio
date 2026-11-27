@@ -68,6 +68,6 @@ fn expected(regions: f64, functions: f64, lines: f64, suffix: &str) -> String {
 #[cfg(target_os = "windows")]
 fn win(input: &str) -> String {
     input
-        .replace('\n', "\r\n")
+        //.replace('\n', "\r\n")
         .replace("coverio ", "coverio.exe ")
 }

@@ -57,6 +57,9 @@ Usage: coverio [OPTIONS]  [ARGS]
 For more information, try '-h' or '--help'
 Error: kuku
 ";
+    println!("{:?}", expected_stderr);
+    println!("{:?}", super::win(expected_stderr));
+
     #[cfg(target_os = "windows")]
     let expected_stderr = super::win(expected_stderr);
     cli_assert::command!()
