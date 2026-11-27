@@ -220,13 +220,13 @@ impl CoverageReport {
 
     /// Returns a link of the `shields.io` badge reporting the coverage.
     pub fn badge(&self, properties: &BadgeProperties) -> String {
-        let regions_perc = self.regions_percent.trunc();
-        let functions_perc = self.functions_percent.trunc();
-        let lines_perc = self.lines_percent.trunc();
-        let equal_perc = (self.regions_percent - self.functions_percent).abs() < 0.01
+        let regions = self.regions_percent.trunc();
+        let functions = self.functions_percent.trunc();
+        let lines = self.lines_percent.trunc();
+        let equal = (self.regions_percent - self.functions_percent).abs() < 0.01
             && (self.functions_percent - self.lines_percent).abs() < 0.01;
         let mut min = f64::MAX;
-        for (percent, count) in [regions_perc, functions_perc, lines_perc].iter().zip([
+        for (percent, count) in [regions, functions, lines].iter().zip([
             self.regions_count,
             self.functions_count,
             self.lines_count,
@@ -242,39 +242,23 @@ impl CoverageReport {
         } else {
             &self.color_moderate
         };
-        let separator = separator(&properties.separator);
-        let prefix = format!("https://img.shields.io/badge/{}", properties.badge_label);
+        let sep = separator(&properties.separator);
+        let label = format!("https://img.shields.io/badge/{}", properties.badge_label);
         let query_parameter = properties.badge_style.query_parameter();
         let style = if query_parameter.is_empty() {
             String::new()
         } else {
             format!("?style={query_parameter}")
         };
-        let regions = label_value(regions_perc, self.regions_count, properties.no_percent_sign);
-        let functions = label_value(
-            functions_perc,
-            self.functions_count,
-            properties.no_percent_sign,
-        );
-        let lines = label_value(lines_perc, self.lines_count, properties.no_percent_sign);
+        let r = label_value(regions, self.regions_count, properties.no_percent_sign);
+        let f = label_value(functions, self.functions_count, properties.no_percent_sign);
+        let l = label_value(lines, self.lines_count, properties.no_percent_sign);
         match properties.collapse {
-            Collapse::Equal if equal_perc => {
-                format!("{prefix}-{lines}-{color}.svg{style}")
-            }
-            Collapse::Functions => {
-                format!("{prefix}-{functions}-{color}.svg{style}")
-            }
-            Collapse::Regions => {
-                format!("{prefix}-{regions}-{color}.svg{style}")
-            }
-            Collapse::Lines => {
-                format!("{prefix}-{lines}-{color}.svg{style}")
-            }
-            _ => {
-                format!(
-                    "{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}"
-                )
-            }
+            Collapse::Equal if equal => format!("{label}-{l}-{color}.svg{style}"),
+            Collapse::Functions => format!("{label}-{f}-{color}.svg{style}"),
+            Collapse::Regions => format!("{label}-{r}-{color}.svg{style}"),
+            Collapse::Lines => format!("{label}-{l}-{color}.svg{style}"),
+            _ => format!("{label}-{r}{sep}{f}{sep}{l}-{color}.svg{style}"),
         }
     }
 }
