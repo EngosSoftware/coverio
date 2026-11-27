@@ -30,6 +30,8 @@ Options:
   -h, --help                   Print help
 
 ";
+    #[cfg(target_os = "windows")]
+    let expected_stdout = super::win(expected_stdout);
     cli_assert::command!()
         .arg("-h")
         .success()
@@ -66,6 +68,8 @@ Options:
   -h, --help                   Print help
 
 ";
+    #[cfg(target_os = "windows")]
+    let expected_stdout = super::win(expected_stdout);
     cli_assert::command!()
         .arg("--help")
         .success()

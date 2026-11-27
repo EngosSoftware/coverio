@@ -18,6 +18,8 @@ mod valid_zero_input_file;
 mod valid_zero_red_stdin;
 mod valid_zero_yellow_stdin;
 
+use super::*;
+
 /// Utility function for building JSON input .
 fn input(regions: (usize, f64), functions: (usize, f64), lines: (usize, f64)) -> String {
     format!(
@@ -63,11 +65,4 @@ fn expected(regions: f64, functions: f64, lines: f64, suffix: &str) -> String {
 
 ",
     )
-}
-
-#[cfg(target_os = "windows")]
-fn win(input: &str) -> String {
-    input
-        //.replace('\n', "\r\n")
-        .replace("coverio ", "coverio.exe ")
 }
