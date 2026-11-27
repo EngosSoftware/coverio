@@ -25,7 +25,7 @@ checksum = "ef417f821ef79296ed89405aea025a756f5ab48b5f7a47db6698f3f3da4f1bc5"
 
 [[package]]
 name = "coverio"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "antex",
  "clars",
