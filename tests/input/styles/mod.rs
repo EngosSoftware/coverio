@@ -52,13 +52,18 @@ fn _0002() {
         .arg("-s")
         .arg("non-existing-style")
         .stdin(INPUT)
-        .success()
-        .stdout(format!(
-            r"{EXPECTED}
+        .failure()
+        .stdout("")
+        .stderr(
+            r"error: invalid value 'non-existing-style' for '--style <STYLE>'
+  [possible values: flat, flat-square, plastic, for-the-badge, social]
 
-"
-        ))
-        .stderr("")
+Usage: coverio [OPTIONS]  [ARGS]
+
+For more information, try '-h' or '--help'
+Error: kuku
+",
+        )
         .execute();
 }
 

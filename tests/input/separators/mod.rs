@@ -52,13 +52,18 @@ fn _0002() {
         .arg("-r")
         .arg("non-existing-separator")
         .stdin(INPUT)
-        .success()
-        .stdout(format!(
-            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
+        .failure()
+        .stdout("")
+        .stderr(
+            r"error: invalid value 'non-existing-separator' for '--separator <SEPARATOR>'
+  [possible values: space, bar, spaced-bar]
 
-"
-        ))
-        .stderr("")
+Usage: coverio [OPTIONS]  [ARGS]
+
+For more information, try '-h' or '--help'
+Error: kuku
+",
+        )
         .execute();
 }
 

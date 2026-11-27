@@ -1,42 +1,30 @@
 use crate::errors::{CoverioError, Result};
 use serde_json::{Map, Value};
 
-/// Unicode character ` ` (U+0020) Space (SP)
+/// Encoded Unicode character ` ` (U+0020) Space (SP)
 const SPACE: &str = "%20";
 
-/// Unicode character `%` (U+0025) Percent Sign
+/// Encoded Unicode character `%` (U+0025) Percent Sign
 const PERCENT: &str = "%25";
+//const PERCENT: &str = "%D9%AA";
 
-/// Unicode character `│` (U+2502) Box Drawings Light Vertical
+/// Encoded Unicode character `│` (U+2502) Box Drawings Light Vertical
 const BOX_DRAWINGS_LIGHT_VERTICAL: &str = "%E2%94%82";
 
-/// Unicode character `—` (U+2014) Em Dash.
+/// Encoded Unicode character `—` (U+2014) Em Dash.
 const EM_DASH: &str = "%E2%80%94";
 
-/// Default badge label.
-pub const BADGE_LABEL: &str = "coverage";
-
 /// Badge properties.
+#[derive(Default)]
 pub struct BadgeProperties {
     badge_style: BadgeStyle,
     badge_label: String,
-    separator_style: SeparatorStyle,
+    separator: Separator,
     no_percent_sign: bool,
-    squash: bool,
+    collapse: bool,
 }
 
 impl BadgeProperties {
-    /// Creates new instance of [`BadgeProperties`].
-    pub fn new() -> Self {
-        Self {
-            badge_style: BadgeStyle::default(),
-            badge_label: BADGE_LABEL.to_string(),
-            separator_style: SeparatorStyle::default(),
-            no_percent_sign: false,
-            squash: false,
-        }
-    }
-
     pub const fn with_badge_style(mut self, badge_style: BadgeStyle) -> Self {
         self.badge_style = badge_style;
         self
@@ -47,8 +35,8 @@ impl BadgeProperties {
         self
     }
 
-    pub const fn with_separator_style(mut self, separator_style: SeparatorStyle) -> Self {
-        self.separator_style = separator_style;
+    pub const fn with_separator(mut self, separator: Separator) -> Self {
+        self.separator = separator;
         self
     }
 
@@ -57,8 +45,8 @@ impl BadgeProperties {
         self
     }
 
-    pub const fn with_squash(mut self, squash: bool) -> Self {
-        self.squash = squash;
+    pub const fn with_collapse(mut self, squash: bool) -> Self {
+        self.collapse = squash;
         self
     }
 }
@@ -105,17 +93,17 @@ impl From<&str> for BadgeStyle {
 }
 
 #[derive(Debug, Default)]
-pub enum SeparatorStyle {
+pub enum Separator {
+    /// Vertical bar with space before and after.
+    #[default]
+    SpacedBar,
     /// Single space.
     Space,
     /// Vertical bar.
     Bar,
-    /// Vertical bar with space before and after.
-    #[default]
-    SpacedBar,
 }
 
-impl From<&str> for SeparatorStyle {
+impl From<&str> for Separator {
     fn from(value: &str) -> Self {
         match value {
             "space" => Self::Space,
@@ -233,7 +221,7 @@ impl CoverageReport {
         } else {
             &self.color_moderate
         };
-        let separator = separator(&properties.separator_style);
+        let separator = separator(&properties.separator);
         let prefix = format!("https://img.shields.io/badge/{}", properties.badge_label);
         let query_parameter = properties.badge_style.query_parameter();
         let style = if query_parameter.is_empty() {
@@ -248,7 +236,7 @@ impl CoverageReport {
             properties.no_percent_sign,
         );
         let lines = label_value(lines_perc, self.lines_count, properties.no_percent_sign);
-        if properties.squash && equal_perc {
+        if properties.collapse && equal_perc {
             format!("{prefix}-{lines}-{color}.svg{style}")
         } else {
             format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
@@ -276,11 +264,11 @@ fn read_values(map: &Map<String, Value>, key: &str) -> Result<(u64, f64), Coveri
 }
 
 /// Returns the coverage values separator.
-fn separator(separator_style: &SeparatorStyle) -> String {
+fn separator(separator_style: &Separator) -> String {
     match separator_style {
-        SeparatorStyle::Space => SPACE.to_string(),
-        SeparatorStyle::Bar => BOX_DRAWINGS_LIGHT_VERTICAL.to_string(),
-        SeparatorStyle::SpacedBar => format!("{SPACE}{BOX_DRAWINGS_LIGHT_VERTICAL}{SPACE}"),
+        Separator::Space => SPACE.to_string(),
+        Separator::Bar => BOX_DRAWINGS_LIGHT_VERTICAL.to_string(),
+        Separator::SpacedBar => format!("{SPACE}{BOX_DRAWINGS_LIGHT_VERTICAL}{SPACE}"),
     }
 }
 
