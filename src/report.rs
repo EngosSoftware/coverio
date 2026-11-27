@@ -1,65 +1,44 @@
 use crate::errors::{CoverioError, Result};
 use serde_json::{Map, Value};
 
-/// Unicode character ` ` (U+0020) Space (SP)
+/// Encoded Unicode character ` ` (U+0020) Space (SP)
 const SPACE: &str = "%20";
 
-/// Unicode character `%` (U+0025) Percent Sign
+/// Encoded Unicode character `%` (U+0025) Percent Sign
 const PERCENT: &str = "%25";
 
-/// Unicode character `│` (U+2502) Box Drawings Light Vertical
+/// Encoded Unicode character `│` (U+2502) Box Drawings Light Vertical
 const BOX_DRAWINGS_LIGHT_VERTICAL: &str = "%E2%94%82";
 
-/// Unicode character `—` (U+2014) Em Dash.
+/// Encoded Unicode character `—` (U+2014) Em Dash.
 const EM_DASH: &str = "%E2%80%94";
 
-/// Default badge label.
-pub const BADGE_LABEL: &str = "coverage";
-
 /// Badge properties.
+#[derive(Default)]
 pub struct BadgeProperties {
     badge_style: BadgeStyle,
     badge_label: String,
-    separator_style: SeparatorStyle,
-    no_percent_sign: bool,
-    squash: bool,
+    separator: Separator,
+    hide_percent: bool,
+    collapse: Collapse,
 }
 
 impl BadgeProperties {
-    /// Creates new instance of [`BadgeProperties`].
-    pub fn new() -> Self {
+    /// Creates badge properties.
+    pub const fn new(
+        badge_style: BadgeStyle,
+        badge_label: String,
+        separator: Separator,
+        hide_percent: bool,
+        collapse: Collapse,
+    ) -> Self {
         Self {
-            badge_style: BadgeStyle::default(),
-            badge_label: BADGE_LABEL.to_string(),
-            separator_style: SeparatorStyle::default(),
-            no_percent_sign: false,
-            squash: false,
+            badge_style,
+            badge_label,
+            separator,
+            hide_percent,
+            collapse,
         }
-    }
-
-    pub const fn with_badge_style(mut self, badge_style: BadgeStyle) -> Self {
-        self.badge_style = badge_style;
-        self
-    }
-
-    pub fn with_badge_label(mut self, badge_label: String) -> Self {
-        self.badge_label = badge_label;
-        self
-    }
-
-    pub const fn with_separator_style(mut self, separator_style: SeparatorStyle) -> Self {
-        self.separator_style = separator_style;
-        self
-    }
-
-    pub const fn with_no_percent_sign(mut self, no_percent_sign: bool) -> Self {
-        self.no_percent_sign = no_percent_sign;
-        self
-    }
-
-    pub const fn with_squash(mut self, squash: bool) -> Self {
-        self.squash = squash;
-        self
     }
 }
 
@@ -104,23 +83,52 @@ impl From<&str> for BadgeStyle {
     }
 }
 
+/// Values separator.
 #[derive(Debug, Default)]
-pub enum SeparatorStyle {
+pub enum Separator {
+    /// Vertical bar with space before and after.
+    #[default]
+    SpacedBar,
     /// Single space.
     Space,
     /// Vertical bar.
     Bar,
-    /// Vertical bar with space before and after.
-    #[default]
-    SpacedBar,
 }
 
-impl From<&str> for SeparatorStyle {
+impl From<&str> for Separator {
     fn from(value: &str) -> Self {
         match value {
             "space" => Self::Space,
             "bar" => Self::Bar,
             _ => Self::SpacedBar,
+        }
+    }
+}
+
+/// Collapse mode.
+#[derive(Debug, Default)]
+pub enum Collapse {
+    /// Collapses to one value when all are equal.
+    #[default]
+    Equal,
+    /// Always displays all values.
+    Never,
+    /// Displays only coverage for regions.
+    Regions,
+    /// Displays only coverage for function.
+    Functions,
+    /// Displays only coverage for lines.
+    Lines,
+}
+
+impl From<&str> for Collapse {
+    fn from(value: &str) -> Self {
+        match value {
+            "never" => Self::Never,
+            "regions" => Self::Regions,
+            "functions" => Self::Functions,
+            "lines" => Self::Lines,
+            _ => Self::Equal,
         }
     }
 }
@@ -211,13 +219,13 @@ impl CoverageReport {
 
     /// Returns a link of the `shields.io` badge reporting the coverage.
     pub fn badge(&self, properties: &BadgeProperties) -> String {
-        let regions_perc = self.regions_percent.trunc();
-        let functions_perc = self.functions_percent.trunc();
-        let lines_perc = self.lines_percent.trunc();
-        let equal_perc = (self.regions_percent - self.functions_percent).abs() < 0.01
+        let regions = self.regions_percent.trunc();
+        let functions = self.functions_percent.trunc();
+        let lines = self.lines_percent.trunc();
+        let equal = (self.regions_percent - self.functions_percent).abs() < 0.01
             && (self.functions_percent - self.lines_percent).abs() < 0.01;
         let mut min = f64::MAX;
-        for (percent, count) in [regions_perc, functions_perc, lines_perc].iter().zip([
+        for (percent, count) in [regions, functions, lines].iter().zip([
             self.regions_count,
             self.functions_count,
             self.lines_count,
@@ -233,25 +241,23 @@ impl CoverageReport {
         } else {
             &self.color_moderate
         };
-        let separator = separator(&properties.separator_style);
-        let prefix = format!("https://img.shields.io/badge/{}", properties.badge_label);
+        let sep = separator(&properties.separator);
+        let label = format!("https://img.shields.io/badge/{}", properties.badge_label);
         let query_parameter = properties.badge_style.query_parameter();
         let style = if query_parameter.is_empty() {
             String::new()
         } else {
             format!("?style={query_parameter}")
         };
-        let regions = label_value(regions_perc, self.regions_count, properties.no_percent_sign);
-        let functions = label_value(
-            functions_perc,
-            self.functions_count,
-            properties.no_percent_sign,
-        );
-        let lines = label_value(lines_perc, self.lines_count, properties.no_percent_sign);
-        if properties.squash && equal_perc {
-            format!("{prefix}-{lines}-{color}.svg{style}")
-        } else {
-            format!("{prefix}-{regions}{separator}{functions}{separator}{lines}-{color}.svg{style}")
+        let r = label_value(regions, self.regions_count, properties.hide_percent);
+        let f = label_value(functions, self.functions_count, properties.hide_percent);
+        let l = label_value(lines, self.lines_count, properties.hide_percent);
+        match properties.collapse {
+            Collapse::Equal if equal => format!("{label}-{l}-{color}.svg{style}"),
+            Collapse::Functions => format!("{label}-{f}-{color}.svg{style}"),
+            Collapse::Regions => format!("{label}-{r}-{color}.svg{style}"),
+            Collapse::Lines => format!("{label}-{l}-{color}.svg{style}"),
+            _ => format!("{label}-{r}{sep}{f}{sep}{l}-{color}.svg{style}"),
         }
     }
 }
@@ -276,18 +282,18 @@ fn read_values(map: &Map<String, Value>, key: &str) -> Result<(u64, f64), Coveri
 }
 
 /// Returns the coverage values separator.
-fn separator(separator_style: &SeparatorStyle) -> String {
+fn separator(separator_style: &Separator) -> String {
     match separator_style {
-        SeparatorStyle::Space => SPACE.to_string(),
-        SeparatorStyle::Bar => BOX_DRAWINGS_LIGHT_VERTICAL.to_string(),
-        SeparatorStyle::SpacedBar => format!("{SPACE}{BOX_DRAWINGS_LIGHT_VERTICAL}{SPACE}"),
+        Separator::Space => SPACE.to_string(),
+        Separator::Bar => BOX_DRAWINGS_LIGHT_VERTICAL.to_string(),
+        Separator::SpacedBar => format!("{SPACE}{BOX_DRAWINGS_LIGHT_VERTICAL}{SPACE}"),
     }
 }
 
 /// Returns the formatted coverage value.
-fn label_value(value: f64, count: u64, no_percent_sign: bool) -> String {
+fn label_value(value: f64, count: u64, hide_percent: bool) -> String {
     if count > 0 {
-        if no_percent_sign {
+        if hide_percent {
             format!("{value}")
         } else {
             format!("{value}{PERCENT}")

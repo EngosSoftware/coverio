@@ -1,46 +1,17 @@
-const INPUT: &str = r#"
-{
-  "data": [
-    {
-      "totals": {
-        "functions": {
-          "count": 10,
-          "percent": 100.0
-        },
-        "lines": {
-          "count": 10,
-          "percent": 100.0
-        },
-        "regions": {
-          "count": 10,
-          "percent": 100.0
-        }
-      }
-    }
-  ]
-}
-"#;
-
-const EXPECTED: &str = r"
- ┌────────────────────┬──────────┐
- │      Coverage      │     %    │
- ├────────────────────┼──────────┤
- │ Covered regions    │ 100.0000 │
- │ Executed functions │ 100.0000 │
- │ Covered lines      │ 100.0000 │
- └────────────────────┴──────────┘
-
- Badge link: https://img.shields.io/badge/coverage-";
+use super::{expected, input};
 
 #[test]
 fn _0001() {
     cli_assert::command!()
-        .stdin(INPUT)
+        .arg("-C")
+        .arg("never")
+        .stdin(input((10, 100.0), (10, 100.0), (10, 100.0)))
         .success()
-        .stdout(format!(
-            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
-
-"
+        .stdout(expected(
+            100.0,
+            100.0,
+            100.0,
+            "100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg",
         ))
         .stderr("")
         .execute();
@@ -49,14 +20,11 @@ fn _0001() {
 #[test]
 fn _0002() {
     cli_assert::command!()
-        .arg("-c")
-        .stdin(INPUT)
+        .arg("-C")
+        .arg("equal")
+        .stdin(input((10, 100.0), (10, 100.0), (10, 100.0)))
         .success()
-        .stdout(format!(
-            r"{EXPECTED}100%25-21b577.svg
-
-"
-        ))
+        .stdout(expected(100.0, 100.0, 100.0, "100%25-21b577.svg"))
         .stderr("")
         .execute();
 }
@@ -64,14 +32,56 @@ fn _0002() {
 #[test]
 fn _0003() {
     cli_assert::command!()
-        .arg("--collapse")
-        .stdin(INPUT)
+        .arg("-C")
+        .arg("equal")
+        .stdin(input((10, 87.0), (10, 87.0), (10, 87.0)))
         .success()
-        .stdout(format!(
-            r"{EXPECTED}100%25-21b577.svg
+        .stdout(expected(87.0, 87.0, 87.0, "87%25-21b577.svg"))
+        .stderr("")
+        .execute();
+}
 
-"
-        ))
+#[test]
+fn _0004() {
+    cli_assert::command!()
+        .arg("--collapse")
+        .arg("equal")
+        .stdin(input((10, 100.0), (10, 100.0), (10, 100.0)))
+        .success()
+        .stdout(expected(100.0, 100.0, 100.0, "100%25-21b577.svg"))
+        .stderr("")
+        .execute();
+}
+
+#[test]
+fn _0005() {
+    cli_assert::command!()
+        .arg("-C=functions")
+        .stdin(input((30, 97.0), (10, 98.0), (20, 99.0)))
+        .success()
+        .stdout(expected(97.0, 98.0, 99.0, "98%25-21b577.svg"))
+        .stderr("")
+        .execute();
+}
+
+#[test]
+fn _0006() {
+    cli_assert::command!()
+        .arg("-C=regions")
+        .stdin(input((30, 97.0), (10, 98.0), (20, 99.0)))
+        .success()
+        .stdout(expected(97.0, 98.0, 99.0, "97%25-21b577.svg"))
+        .stderr("")
+        .execute();
+}
+
+#[test]
+fn _0007() {
+    cli_assert::command!()
+        .arg("-C=lines")
+        .stdin(input((30, 97.0), (10, 98.0), (20, 99.0)))
+        .success()
+        .stdout(expected(97.0, 98.0, 99.0, "99%25-21b577.svg"))
         .stderr("")
         .execute();
 }

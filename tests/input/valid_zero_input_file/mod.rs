@@ -13,6 +13,7 @@ fn _0001() {
 
 ";
     cli_assert::command!()
+        .arg("--collapse=never")
         .arg("coverage.json")
         .success()
         .stdout(expected)

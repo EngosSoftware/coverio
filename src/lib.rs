@@ -9,8 +9,12 @@ mod report;
 
 pub use errors::{CoverioError, Result};
 
+use crate::cli::{CliAction, get_action};
+use antex::ColorMode;
+use clars::{get_app_and_args, get_more_info_hint};
 use report::{BadgeProperties, CoverageReport};
 use std::io::Read;
+use std::process::ExitCode;
 use std::{fs, io};
 
 fn get_content_from_file(file_name: String) -> Result<String> {
@@ -63,7 +67,7 @@ fn update_markdown_file(
                 line.to_string()
             }
         };
-        let content = fs::read_to_string(markdown_file.clone())
+        let content = fs::read_to_string(&markdown_file)
             .map_err(|e| CoverioError::new(e.to_string()))?
             .lines()
             .map(replace)
@@ -80,28 +84,37 @@ fn update_markdown_file(
 /// # Errors
 ///
 /// //TODO Add errors description
-pub fn run() -> Result<()> {
-    let matches = cli::get_command().get_matches();
-    let input_file = cli::input_file(&matches);
-    let badge_properties = BadgeProperties::new()
-        .with_badge_style(cli::badge_style(&matches))
-        .with_badge_label(cli::badge_label(&matches))
-        .with_separator_style(cli::separator_style(&matches))
-        .with_no_percent_sign(cli::no_percent_sign(&matches))
-        .with_squash(cli::collapse(&matches));
-    let content = match input_file {
-        Some(file_name) => {
-            if file_name == "-" {
-                get_content_from_stdin()?
-            } else {
-                get_content_from_file(file_name)?
-            }
+pub fn run() -> Result<ExitCode> {
+    let (app, args) = get_app_and_args();
+    match get_action(app, args) {
+        CliAction::Run(input_file, badge_properties, markdown_tag, markdown_file) => {
+            let content = match input_file {
+                Some(file_name) => {
+                    if file_name == "-" {
+                        get_content_from_stdin()?
+                    } else {
+                        get_content_from_file(file_name)?
+                    }
+                }
+                None => get_content_from_stdin()?,
+            };
+            let badge_link = process_content(&content, &badge_properties)?;
+            update_markdown_file(&badge_link, markdown_tag, markdown_file)?;
         }
-        None => get_content_from_stdin()?,
-    };
-    let badge_link = process_content(&content, &badge_properties)?;
-    let markdown_tag = cli::markdown_tag(&matches);
-    let markdown_file = cli::markdown_file(&matches);
-    update_markdown_file(&badge_link, markdown_tag, markdown_file)?;
-    Ok(())
+        CliAction::ShowVersion(version) => {
+            println!("{version}");
+        }
+        CliAction::ShowHelp(text) => {
+            println!("{text}");
+        }
+        CliAction::Error(text) => {
+            eprintln!("{text}");
+            eprintln!(
+                "{}",
+                get_more_info_hint(ColorMode::default(), &["-h", "--help"])
+            );
+            return Ok(ExitCode::FAILURE);
+        }
+    }
+    Ok(ExitCode::SUCCESS)
 }

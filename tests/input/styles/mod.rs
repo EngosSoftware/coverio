@@ -35,6 +35,7 @@ const EXPECTED: &str = r"
 #[test]
 fn _0001() {
     cli_assert::command!()
+        .arg("-C=never")
         .stdin(INPUT)
         .success()
         .stdout(format!(
@@ -48,24 +49,31 @@ fn _0001() {
 
 #[test]
 fn _0002() {
+    let expected_stderr = r"error: invalid value 'non-existing-style' for '--style <STYLE>'
+  [possible values: flat, flat-square, plastic, for-the-badge, social]
+
+Usage: coverio [OPTIONS]  [ARGS]
+
+For more information, try '-h' or '--help'
+";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = super::win(expected_stderr);
     cli_assert::command!()
-        .arg("-s")
+        .arg("-S")
         .arg("non-existing-style")
         .stdin(INPUT)
-        .success()
-        .stdout(format!(
-            r"{EXPECTED}
-
-"
-        ))
-        .stderr("")
+        .failure()
+        .code(1)
+        .stdout("")
+        .stderr(expected_stderr)
         .execute();
 }
 
 #[test]
 fn _0003() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-C=never")
+        .arg("-S")
         .arg("flat")
         .stdin(INPUT)
         .success()
@@ -81,6 +89,7 @@ fn _0003() {
 #[test]
 fn _0004() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--style=flat-square")
         .stdin(INPUT)
         .success()
@@ -96,7 +105,8 @@ fn _0004() {
 #[test]
 fn _0005() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-C=never")
+        .arg("-S")
         .arg("flat-square")
         .stdin(INPUT)
         .success()
@@ -112,7 +122,8 @@ fn _0005() {
 #[test]
 fn _0006() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-C=never")
+        .arg("-S")
         .arg("plastic")
         .stdin(INPUT)
         .success()
@@ -128,7 +139,8 @@ fn _0006() {
 #[test]
 fn _0007() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-C=never")
+        .arg("-S")
         .arg("for-the-badge")
         .stdin(INPUT)
         .success()
@@ -144,7 +156,8 @@ fn _0007() {
 #[test]
 fn _0008() {
     cli_assert::command!()
-        .arg("-s")
+        .arg("-C=never")
+        .arg("-S")
         .arg("social")
         .stdin(INPUT)
         .success()

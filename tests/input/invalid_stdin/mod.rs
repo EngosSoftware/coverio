@@ -7,7 +7,7 @@ fn _0001() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: stream did not contain valid UTF-8\n")
+        .stderr("error: stream did not contain valid UTF-8\n")
         .execute();
 }
 
@@ -19,6 +19,6 @@ fn _0002() {
         .failure()
         .code(1)
         .stdout("")
-        .stderr("Error: stream did not contain valid UTF-8\n")
+        .stderr("error: stream did not contain valid UTF-8\n")
         .execute();
 }

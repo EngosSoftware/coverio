@@ -35,6 +35,7 @@ const EXPECTED: &str = r"
 #[test]
 fn _0001() {
     cli_assert::command!()
+        .arg("-C=never")
         .stdin(INPUT)
         .success()
         .stdout(format!(
@@ -48,24 +49,31 @@ fn _0001() {
 
 #[test]
 fn _0002() {
+    let expected_stderr = r"error: invalid value 'non-existing-separator' for '--separator <SEPARATOR>'
+  [possible values: space, bar, spaced-bar]
+
+Usage: coverio [OPTIONS]  [ARGS]
+
+For more information, try '-h' or '--help'
+";
+    #[cfg(target_os = "windows")]
+    let expected_stderr = super::win(expected_stderr);
     cli_assert::command!()
-        .arg("-r")
+        .arg("-s")
         .arg("non-existing-separator")
         .stdin(INPUT)
-        .success()
-        .stdout(format!(
-            r"{EXPECTED}100%25%20%E2%94%82%20100%25%20%E2%94%82%20100%25-21b577.svg
-
-"
-        ))
-        .stderr("")
+        .failure()
+        .code(1)
+        .stdout("")
+        .stderr(expected_stderr)
         .execute();
 }
 
 #[test]
 fn _0003() {
     cli_assert::command!()
-        .arg("-r")
+        .arg("-C=never")
+        .arg("-s")
         .arg("spaced-bar")
         .stdin(INPUT)
         .success()
@@ -81,7 +89,8 @@ fn _0003() {
 #[test]
 fn _0004() {
     cli_assert::command!()
-        .arg("-r")
+        .arg("-C=never")
+        .arg("-s")
         .arg("bar")
         .stdin(INPUT)
         .success()
@@ -97,7 +106,8 @@ fn _0004() {
 #[test]
 fn _0005() {
     cli_assert::command!()
-        .arg("-r")
+        .arg("-C=never")
+        .arg("-s")
         .arg("space")
         .stdin(INPUT)
         .success()
@@ -113,6 +123,7 @@ fn _0005() {
 #[test]
 fn _0006() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--separator")
         .arg("space")
         .stdin(INPUT)
@@ -129,6 +140,7 @@ fn _0006() {
 #[test]
 fn _0007() {
     cli_assert::command!()
+        .arg("-C=never")
         .arg("--separator=space")
         .stdin(INPUT)
         .success()

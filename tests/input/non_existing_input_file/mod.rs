@@ -1,9 +1,9 @@
 #[test]
 fn _0001() {
     #[cfg(not(target_os = "windows"))]
-    let expected_stderr = "Error: No such file or directory (os error 2)\n";
+    let expected_stderr = "error: No such file or directory (os error 2)\n";
     #[cfg(target_os = "windows")]
-    let expected_stderr = "Error: The system cannot find the file specified. (os error 2)\n";
+    let expected_stderr = "error: The system cannot find the file specified. (os error 2)\n";
     cli_assert::command!()
         .arg("coverage.json")
         .failure()
