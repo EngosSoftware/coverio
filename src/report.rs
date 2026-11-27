@@ -25,29 +25,21 @@ pub struct BadgeProperties {
 }
 
 impl BadgeProperties {
-    pub const fn with_badge_style(mut self, badge_style: BadgeStyle) -> Self {
-        self.badge_style = badge_style;
-        self
-    }
-
-    pub fn with_badge_label(mut self, badge_label: String) -> Self {
-        self.badge_label = badge_label;
-        self
-    }
-
-    pub const fn with_separator(mut self, separator: Separator) -> Self {
-        self.separator = separator;
-        self
-    }
-
-    pub const fn with_no_percent_sign(mut self, no_percent_sign: bool) -> Self {
-        self.no_percent_sign = no_percent_sign;
-        self
-    }
-
-    pub const fn with_collapse(mut self, squash: bool) -> Self {
-        self.collapse = squash;
-        self
+    /// Creates badge properties.
+    pub const fn new(
+        badge_style: BadgeStyle,
+        badge_label: String,
+        separator: Separator,
+        no_percent_sign: bool,
+        collapse: bool,
+    ) -> Self {
+        Self {
+            badge_style,
+            badge_label,
+            separator,
+            no_percent_sign,
+            collapse,
+        }
     }
 }
 

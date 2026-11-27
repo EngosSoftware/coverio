@@ -143,12 +143,13 @@ pub fn get_action(app: String, args: Vec<String>) -> CliAction {
                 .into();
             let collapse = matches.is_present("collapse");
             let no_percent_sign = matches.is_present("no-percent-sign");
-            let badge_properties = BadgeProperties::default()
-                .with_badge_style(badge_style)
-                .with_badge_label(badge_label)
-                .with_separator(separator)
-                .with_collapse(collapse)
-                .with_no_percent_sign(no_percent_sign);
+            let badge_properties = BadgeProperties::new(
+                badge_style,
+                badge_label,
+                separator,
+                no_percent_sign,
+                collapse,
+            );
             let markdown_tag = matches.get_first_value("markdown-tag");
             let markdown_file = matches.get_first_value("markdown-file");
             CliAction::Run(input_file, badge_properties, markdown_tag, markdown_file)
